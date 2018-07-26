@@ -1,6 +1,6 @@
-package top.hejiaxuan.util.jdbc.maker.query;
+package top.hejiaxuan.util.maker.query;
 
-import top.hejiaxuan.util.jdbc.maker.condition.Where;
+import top.hejiaxuan.util.maker.condition.Where;
 
 /**
  * 查询

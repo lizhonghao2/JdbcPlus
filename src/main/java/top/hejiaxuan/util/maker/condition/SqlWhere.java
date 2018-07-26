@@ -1,7 +1,7 @@
-package top.hejiaxuan.util.jdbc.maker.condition;
+package top.hejiaxuan.util.maker.condition;
 
-import top.hejiaxuan.util.jdbc.maker.AbstractMaker;
-import top.hejiaxuan.util.jdbc.maker.Maker;
+import top.hejiaxuan.util.maker.AbstractMaker;
+import top.hejiaxuan.util.maker.Maker;
 import top.hejiaxuan.util.jdbc.util.StringUtils;
 
 import java.util.ArrayList;

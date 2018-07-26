@@ -1,6 +1,6 @@
-package top.hejiaxuan.util.jdbc.maker.update;
+package top.hejiaxuan.util.maker.update;
 
-import top.hejiaxuan.util.jdbc.maker.condition.Where;
+import top.hejiaxuan.util.maker.condition.Where;
 
 /**
  * 更新数据

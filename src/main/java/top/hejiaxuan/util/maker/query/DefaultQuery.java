@@ -1,7 +1,7 @@
-package top.hejiaxuan.util.jdbc.maker.query;
+package top.hejiaxuan.util.maker.query;
 
-import top.hejiaxuan.util.jdbc.maker.Maker;
-import top.hejiaxuan.util.jdbc.maker.condition.SqlWhere;
+import top.hejiaxuan.util.maker.Maker;
+import top.hejiaxuan.util.maker.condition.SqlWhere;
 import top.hejiaxuan.util.jdbc.util.StringUtils;
 
 import java.util.ArrayList;

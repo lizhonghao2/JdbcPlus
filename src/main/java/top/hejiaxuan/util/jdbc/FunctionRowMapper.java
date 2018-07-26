@@ -1,6 +1,6 @@
 package top.hejiaxuan.util.jdbc;
 
-import top.hejiaxuan.util.jdbc.maker.Function;
+import top.hejiaxuan.util.maker.Function;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

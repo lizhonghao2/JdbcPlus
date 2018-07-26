@@ -1,6 +1,6 @@
-package top.hejiaxuan.util.jdbc.maker.insert;
+package top.hejiaxuan.util.maker.insert;
 
-import top.hejiaxuan.util.jdbc.maker.Maker;
+import top.hejiaxuan.util.maker.Maker;
 
 /**
  * 插入数据

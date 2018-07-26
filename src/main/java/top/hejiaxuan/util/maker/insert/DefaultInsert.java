@@ -1,7 +1,7 @@
-package top.hejiaxuan.util.jdbc.maker.insert;
+package top.hejiaxuan.util.maker.insert;
 
-import top.hejiaxuan.util.jdbc.maker.AbstractMaker;
-import top.hejiaxuan.util.jdbc.maker.Maker;
+import top.hejiaxuan.util.maker.AbstractMaker;
+import top.hejiaxuan.util.maker.Maker;
 import top.hejiaxuan.util.jdbc.util.EntityUtils;
 import top.hejiaxuan.util.jdbc.util.StringUtils;
 import org.springframework.util.Assert;

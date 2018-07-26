@@ -1,8 +1,8 @@
-package top.hejiaxuan.util.jdbc.maker.create;
+package top.hejiaxuan.util.maker.create;
 
 import top.hejiaxuan.util.jdbc.annotation.Column;
 import top.hejiaxuan.util.jdbc.annotation.Table;
-import top.hejiaxuan.util.jdbc.maker.AbstractMaker;
+import top.hejiaxuan.util.maker.AbstractMaker;
 import top.hejiaxuan.util.jdbc.util.StringUtils;
 
 import java.lang.reflect.Field;

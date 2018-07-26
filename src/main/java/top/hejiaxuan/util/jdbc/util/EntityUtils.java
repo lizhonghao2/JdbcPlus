@@ -29,7 +29,7 @@ public class EntityUtils {
                 return field;
             }
         }
-        throw new RuntimeException("没有找到id");
+        return null;
     }
 
     /**
@@ -41,6 +41,9 @@ public class EntityUtils {
     public static String idColumnName(Class<?> clz) {
         Assert.isTrue(isTable(clz), "Class 不是一个Table");
         Field idField = idField(clz);
+        if (idField == null) {
+            return null;
+        }
         Assert.isTrue(idField.isAnnotationPresent(Column.class), "缺少注解: Column");
         Column annotation = idField.getAnnotation(Column.class);
         return annotation.value();
@@ -49,6 +52,9 @@ public class EntityUtils {
     public static String idFieldName(Class<?> clz) {
         Assert.isTrue(isTable(clz), "Class 不是一个Table");
         Field idField = idField(clz);
+        if (idField == null) {
+            return null;
+        }
         Assert.isTrue(idField.isAnnotationPresent(Column.class), "缺少注解: Column");
         return idField.getName();
     }
@@ -104,7 +110,6 @@ public class EntityUtils {
         Assert.notNull(clz, "class 不能为 null");
         return clz.isAnnotationPresent(Table.class);
     }
-
 
     /**
      * 获取Table的字段名与Entity属性名的映射Map

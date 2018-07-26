@@ -1,6 +1,6 @@
-package top.hejiaxuan.util.jdbc.maker.create;
+package top.hejiaxuan.util.maker.create;
 
-import top.hejiaxuan.util.jdbc.maker.Maker;
+import top.hejiaxuan.util.maker.Maker;
 
 /**
  * 创建生成数据库的sql

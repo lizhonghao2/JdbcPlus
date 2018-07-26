@@ -4,11 +4,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import top.hejiaxuan.util.jdbc.maker.create.ColumnTypeByField;
-import top.hejiaxuan.util.jdbc.maker.create.Create;
-import top.hejiaxuan.util.jdbc.maker.create.DefaultCreate;
-import top.hejiaxuan.util.jdbc.maker.drop.DefaultDrop;
-import top.hejiaxuan.util.jdbc.maker.drop.Drop;
+import top.hejiaxuan.util.maker.create.ColumnTypeByField;
+import top.hejiaxuan.util.maker.create.Create;
+import top.hejiaxuan.util.maker.create.DefaultCreate;
+import top.hejiaxuan.util.maker.drop.DefaultDrop;
+import top.hejiaxuan.util.maker.drop.Drop;
 
 import java.util.ArrayList;
 import java.util.List;

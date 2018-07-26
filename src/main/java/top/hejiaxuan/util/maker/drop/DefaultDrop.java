@@ -1,6 +1,6 @@
-package top.hejiaxuan.util.jdbc.maker.drop;
+package top.hejiaxuan.util.maker.drop;
 
-import top.hejiaxuan.util.jdbc.maker.AbstractMaker;
+import top.hejiaxuan.util.maker.AbstractMaker;
 
 public class DefaultDrop extends AbstractMaker implements Drop {
     

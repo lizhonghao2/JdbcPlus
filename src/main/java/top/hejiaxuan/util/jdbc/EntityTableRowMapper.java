@@ -121,7 +121,6 @@ public class EntityTableRowMapper<T> implements RowMapper<T> {
         return false;
     }
 
-
     public Map<String, Field> getColumnFieldMapper() {
         return columnFieldMapper;
     }
@@ -139,6 +138,7 @@ public class EntityTableRowMapper<T> implements RowMapper<T> {
     }
 
     public String getIdName() {
+        Assert.notNull(idName, "id 属性不存在！");
         return idName;
     }
 

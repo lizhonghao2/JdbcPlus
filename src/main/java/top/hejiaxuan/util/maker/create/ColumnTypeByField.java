@@ -1,4 +1,4 @@
-package top.hejiaxuan.util.jdbc.maker.create;
+package top.hejiaxuan.util.maker.create;
 
 /**
  * 数据库字段和 java属性字段的映射

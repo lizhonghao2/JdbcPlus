@@ -1,4 +1,4 @@
-package top.hejiaxuan.util.jdbc.maker.condition;
+package top.hejiaxuan.util.maker.condition;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -20,7 +20,7 @@ public class JdbcTest {
         } catch (PropertyVetoException e) {
             e.printStackTrace();
         }
-        comboPooledDataSource.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf-8");
+        comboPooledDataSource.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&characterEncoding=utf-8");
         comboPooledDataSource.setUser("root");
         comboPooledDataSource.setPassword("00000");
         DataSource dataSource = comboPooledDataSource;

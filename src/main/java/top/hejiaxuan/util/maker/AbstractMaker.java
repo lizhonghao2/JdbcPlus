@@ -1,4 +1,4 @@
-package top.hejiaxuan.util.jdbc.maker;
+package top.hejiaxuan.util.maker;
 
 import top.hejiaxuan.util.jdbc.EntityMapperFactory;
 import top.hejiaxuan.util.jdbc.EntityTableRowMapper;

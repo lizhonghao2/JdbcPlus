@@ -1,14 +1,14 @@
 package top.hejiaxuan.util.jdbc;
 
-import top.hejiaxuan.util.jdbc.maker.condition.Where;
-import top.hejiaxuan.util.jdbc.maker.delete.DefaultDelete;
-import top.hejiaxuan.util.jdbc.maker.delete.Delete;
-import top.hejiaxuan.util.jdbc.maker.insert.DefaultInsert;
-import top.hejiaxuan.util.jdbc.maker.insert.Insert;
-import top.hejiaxuan.util.jdbc.maker.query.DefaultQuery;
-import top.hejiaxuan.util.jdbc.maker.query.Query;
-import top.hejiaxuan.util.jdbc.maker.update.DefaultUpdate;
-import top.hejiaxuan.util.jdbc.maker.update.Update;
+import top.hejiaxuan.util.maker.condition.Where;
+import top.hejiaxuan.util.maker.delete.DefaultDelete;
+import top.hejiaxuan.util.maker.delete.Delete;
+import top.hejiaxuan.util.maker.insert.DefaultInsert;
+import top.hejiaxuan.util.maker.insert.Insert;
+import top.hejiaxuan.util.maker.query.DefaultQuery;
+import top.hejiaxuan.util.maker.query.Query;
+import top.hejiaxuan.util.maker.update.DefaultUpdate;
+import top.hejiaxuan.util.maker.update.Update;
 import top.hejiaxuan.util.jdbc.util.EntityUtils;
 
 import java.lang.reflect.Field;

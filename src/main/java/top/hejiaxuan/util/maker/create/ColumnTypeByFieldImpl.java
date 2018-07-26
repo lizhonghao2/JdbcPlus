@@ -1,4 +1,4 @@
-package top.hejiaxuan.util.jdbc.maker.create;
+package top.hejiaxuan.util.maker.create;
 
 import java.util.Date;
 import java.util.HashMap;

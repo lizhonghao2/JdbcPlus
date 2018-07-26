@@ -1,6 +1,6 @@
-package top.hejiaxuan.util.jdbc.maker.delete;
+package top.hejiaxuan.util.maker.delete;
 
-import top.hejiaxuan.util.jdbc.maker.condition.SqlWhere;
+import top.hejiaxuan.util.maker.condition.SqlWhere;
 import top.hejiaxuan.util.jdbc.util.StringUtils;
 import org.springframework.util.Assert;
 
