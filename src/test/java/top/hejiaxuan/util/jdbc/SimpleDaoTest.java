@@ -2,6 +2,8 @@ package top.hejiaxuan.util.jdbc;
 
 import org.junit.Test;
 import top.hejiaxuan.entity.Two;
+import top.hejiaxuan.util.maker.query.DefaultQuery;
+import top.hejiaxuan.util.maker.query.Query;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -24,6 +26,13 @@ public class SimpleDaoTest extends JdbcTest {
 
     @Test
     public void selectBy() {
+        Query query = new DefaultQuery();
+        query.target(Two.class);
+        query.where(query.like("column_2", 1.2));
+        List<Two> twos = simpleDao.selectBy(query);
+        for (Two two : twos) {
+            System.out.println(two);
+        }
     }
 
     @Test
@@ -61,13 +70,13 @@ public class SimpleDaoTest extends JdbcTest {
     @Test
     public void insert() {
         Two two = new Two();
-        two.setColumn1(100.100f);
-        two.setColumn2(100.123d);
-        two.setColumn3(1);
-        two.setColumn4(null);
+        two.setColumn1(112300.120f);
+        two.setColumn2(1.23);
+        two.setColumn3(123);
+        two.setColumn4(false);
         two.setColumn5("1231");
         two.setColumn6(new Date());
-        two.setColumn7(new BigDecimal("1000"));
+        two.setColumn7(new BigDecimal("19999.1231"));
         simpleDao.insert(two);
     }
 

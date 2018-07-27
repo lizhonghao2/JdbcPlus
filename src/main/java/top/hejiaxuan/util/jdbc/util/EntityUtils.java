@@ -26,6 +26,7 @@ public class EntityUtils {
         Assert.isTrue(isTable(clz), "Class 不是一个Table");
         for (Field field : clz.getDeclaredFields()) {
             if (field.isAnnotationPresent(ID.class)) {
+                Assert.isTrue(field.isAnnotationPresent(Column.class), "缺少注解: Column");
                 return field;
             }
         }
@@ -41,10 +42,10 @@ public class EntityUtils {
     public static String idColumnName(Class<?> clz) {
         Assert.isTrue(isTable(clz), "Class 不是一个Table");
         Field idField = idField(clz);
+        //entity中不存在@ID注解时，忽略。
         if (idField == null) {
             return null;
         }
-        Assert.isTrue(idField.isAnnotationPresent(Column.class), "缺少注解: Column");
         Column annotation = idField.getAnnotation(Column.class);
         return annotation.value();
     }
@@ -52,10 +53,10 @@ public class EntityUtils {
     public static String idFieldName(Class<?> clz) {
         Assert.isTrue(isTable(clz), "Class 不是一个Table");
         Field idField = idField(clz);
+        //entity中不存在@ID注解时，忽略。
         if (idField == null) {
             return null;
         }
-        Assert.isTrue(idField.isAnnotationPresent(Column.class), "缺少注解: Column");
         return idField.getName();
     }
 

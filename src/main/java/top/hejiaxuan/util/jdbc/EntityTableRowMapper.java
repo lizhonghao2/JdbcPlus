@@ -55,6 +55,11 @@ public class EntityTableRowMapper<T> implements RowMapper<T> {
     private Map<String, Field> columnFieldMapper = null;
 
     /**
+     * sql 结果转换
+     */
+    private ColumnMapRowMapper columnMapRowMapper = new ColumnMapRowMapper();
+
+    /**
      * 把数据库查询的结果与对象进行转换
      *
      * @param resultSet
@@ -64,7 +69,7 @@ public class EntityTableRowMapper<T> implements RowMapper<T> {
      */
     @Override
     public T mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-        Map<String, Object> resultMap = new ColumnMapRowMapper().mapRow(resultSet, rowNum);
+        Map<String, Object> resultMap = columnMapRowMapper.mapRow(resultSet, rowNum);
         T instance = getInstance(tableClass);
         for (Map.Entry<String, Object> entry : resultMap.entrySet()) {
             //数据库字段名
@@ -138,7 +143,7 @@ public class EntityTableRowMapper<T> implements RowMapper<T> {
     }
 
     public String getIdName() {
-        Assert.notNull(idName, "id 属性不存在！");
+        Assert.notNull(idName, "@ID 不存在,无法找到id！");
         return idName;
     }
 

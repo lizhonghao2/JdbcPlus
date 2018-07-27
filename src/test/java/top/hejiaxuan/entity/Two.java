@@ -12,6 +12,12 @@ public class Two {
     @Column(value="column_1")
     private float column1;
 
+    @Column(value="column_11")
+    private int column11;
+
+    @Column(value="column_10")
+    private Date column10;
+
     @Column(value="column_5")
     private String column5;
 
@@ -23,6 +29,12 @@ public class Two {
 
     @Column(value="column_2")
     private double column2;
+
+    @Column(value="column_9")
+    private Date column9;
+
+    @Column(value="column_8")
+    private Date column8;
 
     @Column(value="column_7")
     private BigDecimal column7;
@@ -36,6 +48,20 @@ public class Two {
 
     public float getColumn1(){
         return this.column1;
+    }
+    public void setColumn11(int column11){
+        this.column11 = column11;
+    }
+
+    public int getColumn11(){
+        return this.column11;
+    }
+    public void setColumn10(Date column10){
+        this.column10 = column10;
+    }
+
+    public Date getColumn10(){
+        return this.column10;
     }
     public void setColumn5(String column5){
         this.column5 = column5;
@@ -65,6 +91,20 @@ public class Two {
     public double getColumn2(){
         return this.column2;
     }
+    public void setColumn9(Date column9){
+        this.column9 = column9;
+    }
+
+    public Date getColumn9(){
+        return this.column9;
+    }
+    public void setColumn8(Date column8){
+        this.column8 = column8;
+    }
+
+    public Date getColumn8(){
+        return this.column8;
+    }
     public void setColumn7(BigDecimal column7){
         this.column7 = column7;
     }
@@ -84,10 +124,14 @@ public class Two {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("column1:").append(column1).append(";");
+        sb.append("column11:").append(column11).append(";");
+        sb.append("column10:").append(column10).append(";");
         sb.append("column5:").append(column5).append(";");
         sb.append("column4:").append(column4).append(";");
         sb.append("column3:").append(column3).append(";");
         sb.append("column2:").append(column2).append(";");
+        sb.append("column9:").append(column9).append(";");
+        sb.append("column8:").append(column8).append(";");
         sb.append("column7:").append(column7).append(";");
         sb.append("column6:").append(column6).append(";");
         return sb.toString();

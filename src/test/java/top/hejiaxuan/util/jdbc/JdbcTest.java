@@ -5,8 +5,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class JdbcTest {
 
