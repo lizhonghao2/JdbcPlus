@@ -36,27 +36,5 @@ simpleDao.insert
 simpleDao.selectBy
 simpleDao.selectById
 ...
-
-
-```
-### 自动建表配置
-
-```
-TableCreator tableCreator = new TableCreator();
-//是否重新建表
-tableCreator.setReCreate(true);
-tableCreator.setJdbcTemplate(jdbcTemplate);
-
-//mysql 数据类型和 java 数据类型的映射
-tableCreator.setColumnTypeByField(new ColumnTypeByFieldImpl());
-        
-//table 对应的 entity
-List<Class> tables = new ArrayList<>();
-tables.add(User.class);
-tables.add(Apple.class);
-tableCreator.setTables(tables);
-
-//开始
-tableCreator.init();
 ```
 
