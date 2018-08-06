@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * 默认的插入
  */
@@ -58,6 +57,9 @@ public class DefaultInsert extends AbstractMaker implements Insert {
 
     @Override
     public String toSql() {
+        if (completeSql != null) {
+            return completeSql;
+        }
         int size = insertColumn.size();
         sql.append("INSERT INTO ").append(tableName).append(StringUtils.SPACE);
         sql.append(StringUtils.append("( ", StringUtils.join(insertColumn, ", "), " ) "));
@@ -65,13 +67,17 @@ public class DefaultInsert extends AbstractMaker implements Insert {
         String[] repeat = StringUtils.repeat("?", size);
         sql.append(StringUtils.join(Arrays.asList(repeat), ", "));
         sql.append(" ) ");
-        String sqlStr = sql.toString();
-        return sqlStr;
+        completeSql = sql.toString();
+        return completeSql;
     }
 
     @Override
     public Object[] getSqlValues() {
         Assert.isTrue(hasValue, "没有要保存的数据");
-        return sqlValues.toArray();
+        if (completeSqlValues != null) {
+            return completeSqlValues;
+        }
+        completeSqlValues = sqlValues.toArray();
+        return completeSqlValues;
     }
 }

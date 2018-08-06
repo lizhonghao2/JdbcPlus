@@ -36,7 +36,7 @@ public abstract class AbstractMaker implements Maker {
     protected String tableName;
 
     /**
-     * 完整的sql
+     * 构建中的sql
      */
     protected StringBuffer sql = new StringBuffer();
 
@@ -49,6 +49,18 @@ public abstract class AbstractMaker implements Maker {
      * 实体类与数据库的映射
      */
     protected EntityTableRowMapper entityTableRowMapper;
+
+    /**
+     * 构建完成的sql
+     * 将构建完成后的sql进行缓存,防止多次调用toSql()方法时造成的sql错乱.
+     */
+    protected String completeSql = null;
+
+    /**
+     * 构建完成的sqlValues
+     * 将构建完成后的sqlValue进行缓存,防止多次调用getSqlValues()方法时造成的sqlValue错乱.
+     */
+    protected Object[] completeSqlValues = null;
 
     public AbstractMaker() {
     }

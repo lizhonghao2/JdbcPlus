@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * sql where
+ */
 public class SqlWhere extends AbstractMaker implements Where {
 
     protected List<And> ands = new ArrayList<>();

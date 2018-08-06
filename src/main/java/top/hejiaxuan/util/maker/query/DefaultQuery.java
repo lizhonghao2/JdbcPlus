@@ -19,6 +19,8 @@ public class DefaultQuery extends SqlWhere implements Query {
 
     private String sqlOrderBy = StringUtils.BLANK;
 
+
+
     /**
      * 用于标示手动添加查询字段的次数
      */
@@ -89,7 +91,15 @@ public class DefaultQuery extends SqlWhere implements Query {
      */
     @Override
     public String toSql() {
-        sql.append(StringUtils.append("SELECT ", StringUtils.join(selection, StringUtils.COMMA), StringUtils.SPACE));
+        if (completeSql != null) {
+            return completeSql;
+        }
+        List<String> newSelection = new ArrayList<>(selection.size());
+        for (int i = 0; i < selection.size(); i++) {
+            String columnName = selection.get(i);
+            newSelection.add(i, StringUtils.append("`", columnName, "`"));
+        }
+        sql.append(StringUtils.append("SELECT ", StringUtils.join(newSelection, StringUtils.COMMA), StringUtils.SPACE));
         sql.append("FROM ").append(tableName).append(StringUtils.SPACE);
         if (sqlWhere.length() != 0) {
             sql.append("WHERE ");
@@ -97,14 +107,18 @@ public class DefaultQuery extends SqlWhere implements Query {
         sql.append(sqlWhere);
         sql.append(sqlOrderBy);
         sql.append(sqlLimit);
-        String sqlStr = sql.toString();
-        return sqlStr;
+        completeSql = sql.toString();
+        return completeSql;
     }
 
     @Override
     public Object[] getSqlValues() {
+        if (completeSqlValues != null) {
+            return completeSqlValues;
+        }
         sqlValues.addAll(super.whereValues);
-        return sqlValues.toArray();
+        completeSqlValues = sqlValues.toArray();
+        return completeSqlValues;
     }
 
 }
