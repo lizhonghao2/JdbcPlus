@@ -57,7 +57,7 @@ public class EntityTableRowMapper<T> implements RowMapper<T> {
     /**
      * sql 结果转换
      */
-    private ColumnMapRowMapper columnMapRowMapper = new ColumnMapRowMapper();
+    private ColumnMapRowMapper columnMapRowMapper = new SimpleDaoColumnMapRowMapper();
 
     /**
      * 把数据库查询的结果与对象进行转换
