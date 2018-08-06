@@ -118,8 +118,10 @@ public class EntityTableRowMapper<T> implements RowMapper<T> {
     boolean setFieldValue(T t, Field field, Object value) {
         field.setAccessible(true);
         try {
-            field.set(t, value);
-            return true;
+            if (value != null) {
+                field.set(t, value);
+                return true;
+            }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
