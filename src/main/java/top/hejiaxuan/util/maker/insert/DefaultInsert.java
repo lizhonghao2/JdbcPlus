@@ -57,9 +57,10 @@ public class DefaultInsert extends AbstractMaker implements Insert {
 
     @Override
     public String toSql() {
-        if (completeSql != null) {
-            return completeSql;
+        if (sqlComplete) {
+            return sql.toString();
         }
+        sqlComplete = true;
         int size = insertColumn.size();
         sql.append("INSERT INTO ").append(tableName).append(StringUtils.SPACE);
         sql.append(StringUtils.append("( ", StringUtils.join(insertColumn, ", "), " ) "));
@@ -67,17 +68,13 @@ public class DefaultInsert extends AbstractMaker implements Insert {
         String[] repeat = StringUtils.repeat("?", size);
         sql.append(StringUtils.join(Arrays.asList(repeat), ", "));
         sql.append(" ) ");
-        completeSql = sql.toString();
-        return completeSql;
+        return sql.toString();
     }
 
     @Override
     public Object[] getSqlValues() {
         Assert.isTrue(hasValue, "没有要保存的数据");
-        if (completeSqlValues != null) {
-            return completeSqlValues;
-        }
-        completeSqlValues = sqlValues.toArray();
-        return completeSqlValues;
+        sqlValueComplete = true;
+        return sqlValues.toArray();
     }
 }

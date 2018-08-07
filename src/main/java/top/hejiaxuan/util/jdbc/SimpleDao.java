@@ -1,5 +1,6 @@
 package top.hejiaxuan.util.jdbc;
 
+import org.springframework.util.Assert;
 import top.hejiaxuan.util.maker.condition.Where;
 import top.hejiaxuan.util.maker.delete.DefaultDelete;
 import top.hejiaxuan.util.maker.delete.Delete;
@@ -128,24 +129,11 @@ public class SimpleDao extends AbstractDao {
      */
     public <T> T selectOneBy(final Query query) {
         List<T> list = selectBy(query);
+        Assert.isTrue(list.size() <= 1, "查询结果数量大于1条!");
         if (list.size() != 0) {
             return list.get(0);
         }
         return null;
-    }
-
-    /**
-     * 根据条件查询
-     *
-     * @param where
-     * @param <T>
-     * @return
-     */
-    public <T> List<T> selectByWhere(final Where where) {
-        Query query = new DefaultQuery();
-        query.target(where.getEntity());
-        query.newWhere(where);
-        return selectBy(query);
     }
 
     /**

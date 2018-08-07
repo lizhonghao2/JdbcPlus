@@ -52,9 +52,10 @@ public class DefaultUpdate extends SqlWhere implements Update {
     @Override
     public String toSql() {
         Assert.isTrue(updataColumn.size() != 0, "没有要更新的字段");
-        if (completeSql != null) {
-            return completeSql;
+        if (sqlComplete) {
+            return sql.toString();
         }
+        sqlComplete = true;
         sql.append("UPDATE ").append(tableName).append(StringUtils.SPACE);
         sql.append("SET ");
         for (int i = 0; i < updataColumn.size(); i++) {
@@ -69,18 +70,17 @@ public class DefaultUpdate extends SqlWhere implements Update {
             sql.append("WHERE ");
         }
         sql.append(sqlWhere);
-        completeSql = sql.toString();
-        return completeSql;
+        return sql.toString();
     }
 
     @Override
     public Object[] getSqlValues() {
-        if (completeSqlValues != null) {
-            return completeSqlValues;
+        if (sqlValueComplete) {
+            return sqlValues.toArray();
         }
+        sqlValueComplete = true;
         sqlValues.addAll(super.whereValues);
-        completeSqlValues = sqlValues.toArray();
-        return completeSqlValues;
+        return sqlValues.toArray();
     }
 
 }
