@@ -96,7 +96,7 @@ public class DefaultQuery extends SqlWhere implements Query {
         List<String> newSelection = new ArrayList<>(selection.size());
         for (int i = 0; i < selection.size(); i++) {
             String columnName = selection.get(i);
-            newSelection.add(i, StringUtils.append("`", columnName, "`"));
+            newSelection.add(i, columnName);
         }
         sql.append(StringUtils.append("SELECT ", StringUtils.join(newSelection, StringUtils.COMMA), StringUtils.SPACE));
         sql.append("FROM ").append(tableName).append(StringUtils.SPACE);
@@ -114,7 +114,7 @@ public class DefaultQuery extends SqlWhere implements Query {
         if (sqlValueComplete) {
             return sqlValues.toArray();
         }
-        sqlComplete = true;
+        sqlValueComplete = true;
         sqlValues.addAll(super.whereValues);
         return sqlValues.toArray();
     }
