@@ -11,11 +11,13 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 数据库与实体类的映射关系
  *
  * @param <T>
+ * @author hjx
  */
 public class EntityTableRowMapper<T> implements RowMapper<T> {
 
@@ -37,12 +39,12 @@ public class EntityTableRowMapper<T> implements RowMapper<T> {
     /**
      * 表中所有的字段
      */
-    private List<String> columnNames = null;
+    private Set<String> columnNames = null;
 
     /**
      * 表中所有的字段对应的属性名称
      */
-    private List<String> fieldNames = null;
+    private Set<String> fieldNames = null;
 
     /**
      * 属性名称和数据库字段名的映射
@@ -161,19 +163,19 @@ public class EntityTableRowMapper<T> implements RowMapper<T> {
         this.tableClass = tableClass;
     }
 
-    public List<String> getColumnNames() {
+    public Set<String> getColumnNames() {
         return columnNames;
     }
 
-    public void setColumnNames(List<String> columnNames) {
+    public void setColumnNames(Set<String> columnNames) {
         this.columnNames = columnNames;
     }
 
-    public List<String> getFieldNames() {
+    public Set<String> getFieldNames() {
         return fieldNames;
     }
 
-    public void setFieldNames(List<String> fieldNames) {
+    public void setFieldNames(Set<String> fieldNames) {
         this.fieldNames = fieldNames;
     }
 

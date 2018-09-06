@@ -1,18 +1,19 @@
 package top.hejiaxuan.util.maker.update;
 
-import top.hejiaxuan.util.maker.condition.Where;
+import top.hejiaxuan.util.maker.SqlMaker;
 
 /**
  * 更新数据
  */
-public interface Update extends Where {
+public interface Update extends SqlMaker {
 
     /**
      * set
      *
      * @param entity
-     * @param selective
+     * @param selective 是否忽略null值
      * @return
      */
-    boolean set(final Object entity, boolean selective);
+    Update set(final Object entity, boolean selective);
+
 }

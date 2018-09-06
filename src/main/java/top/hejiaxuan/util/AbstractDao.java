@@ -1,10 +1,13 @@
-package top.hejiaxuan.util.jdbc;
+package top.hejiaxuan.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
+import top.hejiaxuan.util.jdbc.EntityMapperFactory;
+import top.hejiaxuan.util.jdbc.EntityTableRowMapper;
+import top.hejiaxuan.util.jdbc.FunctionRowMapper;
+import top.hejiaxuan.util.maker.And;
 import top.hejiaxuan.util.maker.Function;
-import top.hejiaxuan.util.maker.condition.Where;
 import top.hejiaxuan.util.maker.delete.Delete;
 import top.hejiaxuan.util.maker.insert.Insert;
 import top.hejiaxuan.util.maker.query.DefaultQuery;
@@ -17,6 +20,8 @@ import java.util.List;
 
 /**
  * dao 的 基类
+ *
+ * @author hjx
  */
 public abstract class AbstractDao {
 
@@ -30,21 +35,19 @@ public abstract class AbstractDao {
     protected Log logger = LogFactory.getLog(AbstractDao.class);
 
     /**
-     * 根据条件查询
+     * 添加一条数据
      *
-     * @param query
+     * @param insert
      * @return
      */
-    final public List selectBy(final Query query) {
-        EntityTableRowMapper mapper = EntityMapperFactory.getMapper(query.getEntity());
-        String sql = query.toSql();
-        Object[] sqlValues = query.getSqlValues();
+    final public Integer insertBy(final Insert insert) {
+        String sql = insert.toSql();
+        Object[] sqlValues = insert.getSqlValues();
         if (logger.isDebugEnabled()) {
             logger.debug(sql);
             logger.debug(Arrays.toString(sqlValues));
         }
-        return jdbcTemplate.query(sql, sqlValues, mapper);
-
+        return jdbcTemplate.update(sql, sqlValues);
     }
 
     /**
@@ -56,22 +59,6 @@ public abstract class AbstractDao {
     final public Integer deleteBy(final Delete delete) {
         String sql = delete.toSql();
         Object[] sqlValues = delete.getSqlValues();
-        if (logger.isDebugEnabled()) {
-            logger.debug(sql);
-            logger.debug(Arrays.toString(sqlValues));
-        }
-        return jdbcTemplate.update(sql, sqlValues);
-    }
-
-    /**
-     * 添加一条数据
-     *
-     * @param insert
-     * @return
-     */
-    final public Integer insertBy(final Insert insert) {
-        String sql = insert.toSql();
-        Object[] sqlValues = insert.getSqlValues();
         if (logger.isDebugEnabled()) {
             logger.debug(sql);
             logger.debug(Arrays.toString(sqlValues));
@@ -96,19 +83,39 @@ public abstract class AbstractDao {
     }
 
     /**
+     * 根据条件查询
+     *
+     * @param query
+     * @return
+     */
+    final public List selectBy(final Query query) {
+        EntityTableRowMapper mapper = EntityMapperFactory.getMapper(query.getEntity());
+        String sql = query.toSql();
+        Object[] sqlValues = query.getSqlValues();
+        if (logger.isDebugEnabled()) {
+            logger.debug(sql);
+            logger.debug(Arrays.toString(sqlValues));
+        }
+        return jdbcTemplate.query(sql, sqlValues, mapper);
+
+    }
+
+    /**
      * 执行一条函数
      *
      * @param clz
-     * @param where
      * @param function
+     * @param ands
      * @param <T>
      * @return
      */
-    final public <T> List<T> function(final Class clz, final Where where, final Function<T> function) {
+    final public <T> List<T> function(final Class clz, final Function<T> function, final List<And> ands) {
         Query query = new DefaultQuery();
         query.target(clz);
         query.addSelection(false, function.getSql());
-        query.newWhere(where);
+        for (And and : ands) {
+            query.where(and);
+        }
         String sql = query.toSql();
         Object[] sqlValues = query.getSqlValues();
         if (logger.isDebugEnabled()) {
@@ -119,7 +126,6 @@ public abstract class AbstractDao {
     }
 
     /* Getter and Setter */
-
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
         this.jdbcTemplate = new JdbcTemplate(dataSource);

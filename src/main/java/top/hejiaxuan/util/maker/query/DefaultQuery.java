@@ -1,40 +1,26 @@
 package top.hejiaxuan.util.maker.query;
 
-import top.hejiaxuan.util.maker.Maker;
-import top.hejiaxuan.util.maker.condition.SqlWhere;
+import top.hejiaxuan.util.jdbc.EntityTableRowMapper;
 import top.hejiaxuan.util.jdbc.util.StringUtils;
+import top.hejiaxuan.util.maker.AbstractMaker;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * 默认的查询
+ * @author hjx
  */
-public class DefaultQuery extends SqlWhere implements Query {
-
-    private List<String> selection;
+public class DefaultQuery extends AbstractMaker implements Query {
 
     private String sqlLimit = StringUtils.BLANK;
-
     private String sqlOrderBy = StringUtils.BLANK;
-
-    /**
-     * 用于标示手动添加查询字段的次数
-     */
-    private boolean addSelection = false;
-
-    @Override
-    public Maker target(Class entity) {
-        super.target(entity);
-        this.selection = entityTableRowMapper.getColumnNames();
-        return this;
-    }
-
-    @Override
-    public Class<?> getEntity() {
-        return entityClass;
-    }
+    //要查询作为结果的字段
+    private List<String> selection = new ArrayList<>();
+    //sql
+    private StringBuilder sql = new StringBuilder();
 
     @Override
     public boolean addSelection(String... columnName) {
@@ -44,43 +30,24 @@ public class DefaultQuery extends SqlWhere implements Query {
     @Override
     public boolean addSelection(boolean check, String... columnNames) {
         List<String> list = Arrays.asList(columnNames);
-        if (!addSelection) {
-            selection = new ArrayList<>();
-            addSelection = true;
-        }
-        for (String name : list) {
+        for (String columnName : list) {
             if (check) {
-                checkColumn(name);
+                checkColumn(columnName);
             }
-            String columnName = getColumnName(name);
-            if (selection.indexOf(columnName) == -1) {
-                selection.add(columnName);
-                continue;
-            }
-            throw new RuntimeException(StringUtils.append("字段 >", name, "< 已经存在! "));
+            selection.add(columnName);
         }
         return true;
     }
 
     @Override
-    public Query orderBy(String[] orderColumns, String type) {
-        List<String> columns = new ArrayList();
-        for (String entityName : orderColumns) {
-            String sqlColumnName = getColumnName(entityName);
-            //如果遍历出的值不在表的字段中
-            if (sqlColumnName == null || StringUtils.BLANK.equals(sqlColumnName)) {
-                columns.add(entityName);
-            } else {
-                columns.add(sqlColumnName);
-            }
-        }
-        this.sqlOrderBy = StringUtils.append("ORDER BY ", StringUtils.join(columns, StringUtils.COMMA), StringUtils.SPACE, type, StringUtils.SPACE);
+    public Query orderBy(String orderBy, String type) {
+        sqlOrderBy = MessageFormat.format("ORDER BY {0} {1} ", orderBy, type);
         return this;
     }
 
     @Override
     public Query limit(int line, int num) {
-        this.sqlLimit = StringUtils.append("LIMIT ", line, StringUtils.COMMA, num, StringUtils.SPACE);
+        this.sqlLimit = MessageFormat.format("LIMIT {0}，{1} ", line, num);
         return this;
     }
 
@@ -88,35 +55,24 @@ public class DefaultQuery extends SqlWhere implements Query {
      * @return
      */
     @Override
-    public String toSql() {
-        if (sqlComplete) {
-            return sql.toString();
+    protected String makeSql() {
+        EntityTableRowMapper entityTableRowMapper = getEntityTableRowMapper();
+        if (selection.size() == 0) {
+            selection = new ArrayList<>(entityTableRowMapper.getColumnNames());
         }
-        sqlComplete = true;
-        List<String> newSelection = new ArrayList<>(selection.size());
-        for (int i = 0; i < selection.size(); i++) {
-            String columnName = selection.get(i);
-            newSelection.add(i, columnName);
-        }
-        sql.append(StringUtils.append("SELECT ", StringUtils.join(newSelection, StringUtils.COMMA), StringUtils.SPACE));
-        sql.append("FROM ").append(tableName).append(StringUtils.SPACE);
-        if (sqlWhere.length() != 0) {
-            sql.append("WHERE ");
-        }
-        sql.append(sqlWhere);
+        sql.append(
+                MessageFormat.format("SELECT {0} FROM {1} ",
+                        StringUtils.join(selection, StringUtils.COMMA), getTableName())
+        );
+        sql.append(sqlWhere());
         sql.append(sqlOrderBy);
         sql.append(sqlLimit);
         return sql.toString();
     }
 
     @Override
-    public Object[] getSqlValues() {
-        if (sqlValueComplete) {
-            return sqlValues.toArray();
-        }
-        sqlValueComplete = true;
-        sqlValues.addAll(super.whereValues);
-        return sqlValues.toArray();
+    protected List<Object> makeSqlValue() {
+        return Arrays.asList(sqlValues);
     }
 
 }

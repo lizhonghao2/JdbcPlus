@@ -1,10 +1,11 @@
 package top.hejiaxuan.util.maker.insert;
 
-import top.hejiaxuan.util.maker.AbstractMaker;
-import top.hejiaxuan.util.maker.Maker;
+import org.springframework.util.Assert;
 import top.hejiaxuan.util.jdbc.util.EntityUtils;
 import top.hejiaxuan.util.jdbc.util.StringUtils;
-import org.springframework.util.Assert;
+import top.hejiaxuan.util.maker.AbstractMaker;
+import top.hejiaxuan.util.maker.SqlMaker;
+import top.hejiaxuan.util.maker.And;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -14,22 +15,14 @@ import java.util.Map;
 
 /**
  * 默认的插入
+ *
+ * @author hjx
  */
 public class DefaultInsert extends AbstractMaker implements Insert {
 
-    private List<String> insertColumn = new ArrayList<>();
+    private List<String> insertColumns;
 
-    /**
-     * 是否有值需要保存
-     */
-    private boolean hasValue = false;
-
-    @Override
-    public Maker target(Class entity) {
-        super.target(entity);
-        this.insertColumn = entityTableRowMapper.getColumnNames();
-        return this;
-    }
+    private List<Object> insertColumnValues;
 
     /**
      * 插入数据
@@ -41,40 +34,41 @@ public class DefaultInsert extends AbstractMaker implements Insert {
     public boolean insert(Object entity) {
         Assert.notNull(entity);
         Map<String, Field> columnFieldMapper = entityTableRowMapper.getColumnFieldMapper();
-        for (int i = 0; i < insertColumn.size(); i++) {
-            String columnName = insertColumn.get(i);
-            if (columnFieldMapper.containsKey(columnName)) {
-                Field field = columnFieldMapper.get(columnName);
-                Object value = EntityUtils.getValue(entity, field);
-                if (!hasValue && value != null) {
-                    hasValue = true;
-                }
-                sqlValues.add(i, value);
-            }
+        insertColumns = new ArrayList(columnFieldMapper.size());
+        insertColumnValues = new ArrayList(columnFieldMapper.size());
+
+        for (Map.Entry<String, Field> stringFieldEntry : columnFieldMapper.entrySet()) {
+            Field field = stringFieldEntry.getValue();
+            insertColumns.add(stringFieldEntry.getKey());
+            insertColumnValues.add(EntityUtils.getValue(entity, field));
         }
         return true;
     }
 
     @Override
-    public String toSql() {
-        if (sqlComplete) {
-            return sql.toString();
-        }
-        sqlComplete = true;
-        int size = insertColumn.size();
-        sql.append("INSERT INTO ").append(tableName).append(StringUtils.SPACE);
-        sql.append(StringUtils.append("( ", StringUtils.join(insertColumn, ", "), " ) "));
-        sql.append("VALUES ( ");
+    protected String makeSql() {
+        StringBuilder builder = new StringBuilder();
+        int size = insertColumns.size();
+        builder.append("INSERT INTO ").append(getTableName()).append(StringUtils.SPACE);
+        builder.append(StringUtils.append("( ", StringUtils.join(insertColumns, ", "), " ) "));
+        builder.append("VALUES ( ");
         String[] repeat = StringUtils.repeat("?", size);
-        sql.append(StringUtils.join(Arrays.asList(repeat), ", "));
-        sql.append(" ) ");
-        return sql.toString();
+        builder.append(StringUtils.join(Arrays.asList(repeat), ", "));
+        builder.append(" ) ");
+        return builder.toString();
     }
 
     @Override
-    public Object[] getSqlValues() {
-        Assert.isTrue(hasValue, "没有要保存的数据");
-        sqlValueComplete = true;
-        return sqlValues.toArray();
+    protected List<Object> makeSqlValue() {
+        if (insertColumnValues == null) {
+            return new ArrayList<>();
+        }
+        return insertColumnValues;
     }
+
+    @Override
+    public SqlMaker where(And... ands) {
+        throw new UnsupportedOperationException("不支持的操作");
+    }
+
 }

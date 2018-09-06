@@ -6,6 +6,9 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * @author hjx
+ */
 public class FunctionRowMapper implements RowMapper {
 
     private Function function;

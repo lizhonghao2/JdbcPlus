@@ -1,41 +1,42 @@
 package top.hejiaxuan.util.maker.update;
 
-import top.hejiaxuan.util.maker.Maker;
-import top.hejiaxuan.util.maker.condition.SqlWhere;
+import org.springframework.util.Assert;
 import top.hejiaxuan.util.jdbc.util.EntityUtils;
 import top.hejiaxuan.util.jdbc.util.StringUtils;
-import org.springframework.util.Assert;
+import top.hejiaxuan.util.maker.AbstractMaker;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 /**
  * 默认的更新
+ *
+ * @author hjx
  */
-public class DefaultUpdate extends SqlWhere implements Update {
+public class DefaultUpdate extends AbstractMaker implements Update {
 
     private List<String> updataColumn;
 
     @Override
-    public Maker target(Class entity) {
+    public Update target(Class entity) {
         super.target(entity);
-        this.updataColumn = entityTableRowMapper.getColumnNames();
-        this.sqlValues = new ArrayList<>(updataColumn.size());
         return this;
     }
 
     @Override
-    public boolean set(final Object entity, final boolean selective) {
+    public Update set(final Object entity, final boolean selective) {
         Assert.notNull(entity);
         //重置被更新字段列表
         this.updataColumn = new ArrayList<>();
-        List<String> columnNames = entityTableRowMapper.getColumnNames();
+        List<String> columnNames = new ArrayList<>(entityTableRowMapper.getColumnNames());
         Map<String, Field> columnFieldMapper = entityTableRowMapper.getColumnFieldMapper();
+        List<Object> values = new ArrayList<>();
         for (int i = 0; i < columnNames.size(); i++) {
             String columnName = columnNames.get(i);
-            if (!columnFieldMapper.containsKey(columnName)) {
+            if (!sqlColumns.contains(columnName)) {
                 continue;
             }
             Field field = columnFieldMapper.get(columnName);
@@ -44,19 +45,17 @@ public class DefaultUpdate extends SqlWhere implements Update {
                 continue;
             }
             updataColumn.add(columnName);
-            sqlValues.add(value);
+            values.add(value);
         }
-        return true;
+        sqlValues = values.toArray();
+        return this;
     }
 
     @Override
-    public String toSql() {
+    public String makeSql() {
         Assert.isTrue(updataColumn.size() != 0, "没有要更新的字段");
-        if (sqlComplete) {
-            return sql.toString();
-        }
-        sqlComplete = true;
-        sql.append("UPDATE ").append(tableName).append(StringUtils.SPACE);
+        StringBuilder sql = new StringBuilder();
+        sql.append("UPDATE ").append(getTableName()).append(StringUtils.SPACE);
         sql.append("SET ");
         for (int i = 0; i < updataColumn.size(); i++) {
             String column = updataColumn.get(i);
@@ -66,21 +65,13 @@ public class DefaultUpdate extends SqlWhere implements Update {
                 sql.append(StringUtils.append(", ", column, " = ? "));
             }
         }
-        if (sqlWhere.length() != 0) {
-            sql.append("WHERE ");
-        }
-        sql.append(sqlWhere);
+        sql.append(sqlWhere());
         return sql.toString();
     }
 
     @Override
-    public Object[] getSqlValues() {
-        if (sqlValueComplete) {
-            return sqlValues.toArray();
-        }
-        sqlValueComplete = true;
-        sqlValues.addAll(super.whereValues);
-        return sqlValues.toArray();
+    public List<Object> makeSqlValue() {
+        return Arrays.asList(sqlValues);
     }
 
 }

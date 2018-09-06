@@ -11,19 +11,12 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Column {
-    
+
     /**
      * 字段在数据库中的名称
      *
      * @return
      */
     String value();
-    
-    /**
-     * 数据库中的注释
-     *
-     * @return
-     */
-    String comment() default "";
     
 }
