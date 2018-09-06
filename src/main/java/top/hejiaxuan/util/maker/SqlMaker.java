@@ -2,10 +2,12 @@ package top.hejiaxuan.util.maker;
 
 import top.hejiaxuan.util.jdbc.EntityTableRowMapper;
 
+import java.util.List;
+
 /**
  * sql生成器
  */
-public interface Maker {
+public interface SqlMaker {
 
     /**
      * 设置目标
@@ -14,7 +16,17 @@ public interface Maker {
      * @param entity
      * @return
      */
-    Maker target(final Class entity);
+    SqlMaker target(final Class entity);
+
+    /**
+     * sql是否构建完成
+     */
+    boolean isSqlComplete();
+
+    /**
+     * sqlValue是否构建完成
+     */
+    boolean isSqlValueComplete();
 
     /**
      * 获取数据库表对应的entity.class
@@ -22,6 +34,13 @@ public interface Maker {
      * @return
      */
     Class<?> getEntity();
+
+    /**
+     * 获取表的名称
+     *
+     * @return
+     */
+    String getTableName();
 
     /**
      * 获取sql
@@ -45,19 +64,13 @@ public interface Maker {
     EntityTableRowMapper getEntityTableRowMapper();
 
     /**
-     * 检查字段是否存在与数据库表中
+     * 添加条件
      *
-     * @param columnName
+     * @param ands
      * @return
      */
-    boolean checkColumn(final String columnName);
+    SqlMaker where(And... ands);
 
-    /**
-     * 是否是sql模式,
-     * 如果不是sql 模式 使用entity 属性名作为查询条件
-     * (现在已经废弃)
-     *
-     * @return
-     */
-    boolean isSqlMode();
+    SqlMaker where(List<And> ands);
+
 }

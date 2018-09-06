@@ -1,66 +1,40 @@
 package top.hejiaxuan.util.maker;
 
+import org.springframework.util.Assert;
 import top.hejiaxuan.util.jdbc.EntityMapperFactory;
 import top.hejiaxuan.util.jdbc.EntityTableRowMapper;
 import top.hejiaxuan.util.jdbc.util.StringUtils;
-import org.springframework.util.Assert;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 默认实现
  */
-public abstract class AbstractMaker implements Maker {
-
-    /**
-     * 是否使用sql模式,默认为原生sql
-     * 设置为false 的情况下, 使用 Entity 字段名称作为查询条件.
-     */
-    protected boolean sqlMode = true;
-
-    /**
-     * sql是否构建完成
-     */
-    protected boolean sqlComplete = false;
-    /**
-     * sqlValue是否构建完成
-     */
-    protected boolean sqlValueComplete = false;
-
-    /**
-     * sql 占位符中的值
-     */
-    protected List<Object> sqlValues = new ArrayList<>();
-
-    /**
-     * 构建中的sql
-     */
-    protected StringBuffer sql = new StringBuffer();
-
-    /**
-     * entity 的 class
-     */
-    protected Class<?> entityClass;
-
-    /**
-     * entity 对应 table 名称
-     */
-    protected String tableName;
-
-    /**
-     * sql 中的where
-     */
-    protected String sqlWhere = StringUtils.BLANK;
-
-    /**
-     * 实体类与数据库的映射
-     */
-    protected EntityTableRowMapper entityTableRowMapper;
+public abstract class AbstractMaker implements SqlMaker {
 
     public AbstractMaker() {
     }
+
+    //sql 是否创建完成
+    private boolean sqlComplete = false;
+
+    //sqlValues 是否创建完成
+    private boolean sqlValueComplete = false;
+
+    //sql中需要的值
+    protected Object[] sqlValues = {};
+
+    //sql中的条件
+    protected List<And> ands = new ArrayList<>();
+
+    //sql
+    protected String sql;
+
+    //sql 中的基本字段
+    protected Set<String> sqlColumns;
+
+    //实体类与数据库的映射
+    protected EntityTableRowMapper entityTableRowMapper;
 
     /**
      * 设置目标
@@ -69,28 +43,12 @@ public abstract class AbstractMaker implements Maker {
      * @return
      */
     @Override
-    public Maker target(Class entity) {
+    public SqlMaker target(Class entity) {
         Assert.notNull(entity);
         EntityTableRowMapper entityTableRowMapper = EntityMapperFactory.getMapper(entity);
         this.entityTableRowMapper = entityTableRowMapper;
-        this.tableName = entityTableRowMapper.getTableName();
-        this.entityClass = entity;
+        this.sqlColumns = entityTableRowMapper.getColumnNames();
         return this;
-    }
-
-    @Override
-    public Class<?> getEntity() {
-        return entityClass;
-    }
-
-    @Override
-    public Object[] getSqlValues() {
-        return sqlValues.toArray();
-    }
-
-    @Override
-    public EntityTableRowMapper getEntityTableRowMapper() {
-        return entityTableRowMapper;
     }
 
     /**
@@ -99,16 +57,18 @@ public abstract class AbstractMaker implements Maker {
      * @param columnName
      * @return
      */
-    @Override
-    public boolean checkColumn(final String columnName) {
-        if (this.entityClass == null) {
+    final protected boolean checkColumn(final String columnName) {
+        Assert.notNull(entityTableRowMapper, "没有指定 entity.");
+        Class tableClass = entityTableRowMapper.getTableClass();
+        if (tableClass == null) {
             return true;
         }
-        List columnNames = entityTableRowMapper.getColumnNames();
-        if (columnNames.indexOf(getColumnName(columnName)) != -1) {
+        Set<String> columnNames = entityTableRowMapper.getColumnNames();
+        if (columnNames.contains(columnName)) {
             return true;
         }
-        throw new UnsupportedOperationException("字段: >" + columnName + "< 不存在于 >" + tableName + "< 表中.");
+        throw new UnsupportedOperationException(
+                "字段: >" + columnName + "< 不存在于 >" + tableClass.getSimpleName() + "< 表中.");
     }
 
     /**
@@ -119,15 +79,112 @@ public abstract class AbstractMaker implements Maker {
      * @return
      */
     final protected String getColumnName(final String name) {
-        if (sqlMode) {
-            return name;
-        }
         Map<String, String> fieldNameColumnMapper = entityTableRowMapper.getFieldNameColumnMapper();
         return fieldNameColumnMapper.get(name);
     }
 
+    /**
+     * 获取sql
+     * 只生成一次，之后取缓存起来的sql
+     *
+     * @return
+     */
     @Override
-    public boolean isSqlMode() {
-        return sqlMode;
+    final public String toSql() {
+        if (isSqlComplete()) {
+            return sql;
+        }
+        this.sql = makeSql();
+        this.sqlComplete = true;
+        return sql;
     }
+
+    /**
+     * 获取sql中需要的value
+     * 只生成一次，之后取缓存起来的sqlValues
+     *
+     * @return
+     */
+    @Override
+    final public Object[] getSqlValues() {
+        if (isSqlValueComplete()) {
+            return sqlValues;
+        }
+        this.sqlValues = makeSqlValue().toArray();
+        this.sqlValueComplete = true;
+        return sqlValues;
+    }
+
+    @Override
+    public boolean isSqlComplete() {
+        return sqlComplete;
+    }
+
+    @Override
+    public boolean isSqlValueComplete() {
+        return sqlValueComplete;
+    }
+
+    @Override
+    public Class<?> getEntity() {
+        Assert.notNull(entityTableRowMapper, "没有指定 entity.");
+        return entityTableRowMapper.getTableClass();
+    }
+
+    @Override
+    public String getTableName() {
+        Assert.notNull(entityTableRowMapper, "没有指定 entity.");
+        return entityTableRowMapper.getTableName();
+    }
+
+    @Override
+    public EntityTableRowMapper getEntityTableRowMapper() {
+        return entityTableRowMapper;
+    }
+
+    @Override
+    final public SqlMaker where(List<And> ands) {
+        List<Object> objects = new ArrayList<>(makeSqlValue());
+        for (And and : ands) {
+            this.ands.add(and);
+            //是否有值
+            if (and.isHasValue()) {
+                for (Object value : and.getSqlValues()) {
+                    objects.add(value);
+                }
+            }
+        }
+        this.sqlValues = objects.toArray();
+        return this;
+    }
+
+    @Override
+    public SqlMaker where(And... ands) {
+        return where(Arrays.asList(ands));
+    }
+
+    /**
+     * 获取sql 中where 条件
+     *
+     * @return
+     */
+    final protected String sqlWhere() {
+        StringBuilder sql = new StringBuilder();
+        if (ands.size() != 0) {
+            sql.append("WHERE ");
+            for (int i = 0; i < ands.size(); i++) {
+                And and = ands.get(i);
+                sql.append(StringUtils.append(and.getSql()));
+                if (i != ands.size() - 1) {
+                    sql.append(StringUtils.AND);
+                }
+            }
+        }
+        return sql.toString();
+    }
+
+    protected abstract String makeSql();
+
+    protected abstract List<Object> makeSqlValue();
+
 }

@@ -1,90 +1,61 @@
 package top.hejiaxuan.util.jdbc;
 
 import org.junit.Test;
-import top.hejiaxuan.entity.Two;
-import top.hejiaxuan.util.maker.query.DefaultQuery;
-import top.hejiaxuan.util.maker.query.Query;
+import top.hejiaxuan.entity.User;
+import top.hejiaxuan.util.maker.And;
+import top.hejiaxuan.util.maker.Where;
+import top.hejiaxuan.util.maker.delete.DefaultDelete;
+import top.hejiaxuan.util.maker.delete.Delete;
+import top.hejiaxuan.util.maker.update.DefaultUpdate;
+import top.hejiaxuan.util.maker.update.Update;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class SimpleDaoTest extends JdbcTest {
-
     @Test
-    public void select() {
-        List<Two> twos = simpleDao.select(Two.class);
-        for (Two two : twos) {
-            System.out.println(two);
-        }
-    }
-
-    @Test
-    public void selectById() {
-        simpleDao.selectById(Two.class, "123");
-    }
-
-    @Test
-    public void selectBy() {
-        Query query = new DefaultQuery();
-        query.target(Two.class);
-        query.where(query.like("column_2", 1.2));
-        List<Two> twos = simpleDao.selectBy(query);
-        for (Two two : twos) {
-            System.out.println(two);
-        }
-    }
-
-    @Test
-    public void selectBy1() {
-    }
-
-    @Test
-    public void selectOneBy() {
-    }
-
-    @Test
-    public void selectOneBy1() {
-    }
-
-    @Test
-    public void selectOneBy2() {
-    }
-
-    @Test
-    public void selectByWhere() {
-    }
-
-    @Test
-    public void deleteById() {
+    public void insert() {
+        User user = new User();
+        user.setId(UUID.randomUUID().toString());
+        user.setName(UUID.randomUUID().toString());
+        user.setAge(new Random().nextInt(100));
+        user.setMark(new Random().nextInt(100));
+        System.out.println(simpleDao.insert(user));
     }
 
     @Test
     public void deleteBy() {
+        Delete delete = new DefaultDelete();
+        delete.target(User.class);
+        delete.where(
+                Where.isNotNull("id")
+        );
+        System.out.println(delete.toSql());
+        System.out.println(Arrays.toString(delete.getSqlValues()));
+        Integer integer = simpleDao.deleteBy(delete);
+        System.out.println(integer);
     }
 
     @Test
-    public void deleteBy1() {
+    public void updateBy() {
+        List<User> select = simpleDao.select(User.class);
+        for (User user : select) {
+            Update update = new DefaultUpdate();
+            update.target(User.class);
+            update.set(user, false);
+            int i = simpleDao.updateBy(update);
+            System.out.println(i);
+        }
     }
 
     @Test
-    public void insert() {
-        Two two = new Two();
-        two.setColumn1(112300.120f);
-        two.setColumn2(1.23);
-        two.setColumn3(123);
-        two.setColumn4(false);
-        two.setColumn5("1231");
-        two.setColumn6(new Date());
-        two.setColumn7(new BigDecimal("19999.1231"));
-        simpleDao.insert(two);
+    public void selectBy() {
+        List<User> select = simpleDao.select(User.class);
+        for (User user : select) {
+            System.out.println(user);
+        }
     }
 
-    @Test
-    public void updateById() {
-    }
-
-    @Test
-    public void updateById1() {
-    }
 }

@@ -7,6 +7,8 @@ import java.sql.SQLException;
 
 /**
  * 自用结果集转换器
+ *
+ * @author hjx
  */
 public class SimpleDaoColumnMapRowMapper extends ColumnMapRowMapper {
 

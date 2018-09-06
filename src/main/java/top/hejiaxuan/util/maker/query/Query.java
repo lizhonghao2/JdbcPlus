@@ -1,11 +1,12 @@
 package top.hejiaxuan.util.maker.query;
 
-import top.hejiaxuan.util.maker.condition.Where;
+import top.hejiaxuan.util.maker.And;
+import top.hejiaxuan.util.maker.SqlMaker;
 
 /**
  * 查询
  */
-public interface Query extends Where {
+public interface Query extends SqlMaker {
 
     /**
      * 添加查询内容
@@ -27,11 +28,11 @@ public interface Query extends Where {
     /**
      * 排序
      *
-     * @param orderColumn
-     * @param type:       ASC/DESC
+     * @param orderBy
+     * @param type:   ASC/DESC
      * @return
      */
-    Query orderBy(String[] orderColumn, String type);
+    Query orderBy(String orderBy, String type);
 
     /**
      * limit

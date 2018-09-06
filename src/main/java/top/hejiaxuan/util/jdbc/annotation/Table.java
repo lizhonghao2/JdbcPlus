@@ -11,19 +11,12 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Table {
-    
+
     /**
      * 标识表的名称
      *
      * @return
      */
     String value();
-    
-    /**
-     * 表的注释
-     *
-     * @return
-     */
-    String comment() default "";
-    
+
 }

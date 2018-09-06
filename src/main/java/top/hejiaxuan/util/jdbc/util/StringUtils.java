@@ -5,6 +5,9 @@ import org.springframework.util.Assert;
 import java.util.Collection;
 import java.util.Iterator;
 
+/**
+ * @author hjx
+ */
 public class StringUtils {
 
     public static final String SPACE = " ";
@@ -12,6 +15,8 @@ public class StringUtils {
     public static final String BLANK = "";
 
     public static final String COMMA = ", ";
+
+    public static final String AND = "AND ";
 
     /**
      * 重复字符串
