@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * 默认的查询
+ *
  * @author hjx
  */
 public class DefaultQuery extends AbstractMaker implements Query {
@@ -47,7 +48,7 @@ public class DefaultQuery extends AbstractMaker implements Query {
 
     @Override
     public Query limit(int line, int num) {
-        this.sqlLimit = MessageFormat.format("LIMIT {0}，{1} ", line, num);
+        this.sqlLimit = MessageFormat.format("LIMIT {0}, {1} ", line, num);
         return this;
     }
 

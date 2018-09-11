@@ -231,9 +231,9 @@ public class SimpleDao extends AbstractDao {
     /**
      * 根据id 更新数据
      * <p>
-     * //     * @param entity
-     * //     * @param selective 是否忽略 null
      *
+     * @param entity
+     * @param selective 是否忽略 null
      * @return
      */
     public Integer updateById(final Object entity, final boolean selective) {
