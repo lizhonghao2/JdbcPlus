@@ -16,7 +16,6 @@ public class StringUtils {
 
     public static final String COMMA = ", ";
 
-    public static final String AND = "AND ";
 
     /**
      * 重复字符串

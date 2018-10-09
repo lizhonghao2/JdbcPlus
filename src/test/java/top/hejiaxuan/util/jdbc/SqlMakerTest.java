@@ -2,7 +2,7 @@ package top.hejiaxuan.util.jdbc;
 
 import org.junit.Test;
 import top.hejiaxuan.entity.User;
-import top.hejiaxuan.util.maker.Where;
+import top.hejiaxuan.util.maker.Wheres;
 import top.hejiaxuan.util.maker.insert.DefaultInsert;
 import top.hejiaxuan.util.maker.insert.Insert;
 import top.hejiaxuan.util.maker.query.DefaultQuery;
@@ -21,8 +21,10 @@ public class SqlMakerTest extends JdbcTest {
         query.limit(0, 10);
         query.orderBy("age", "DESC");
         query.where(
-                Where.equal("id", "456"),
-                Where.equal("age", "123")
+                Wheres.equal("id", "456").or(),
+                Wheres.equal("id", "123").or(),
+                Wheres.equal("id", "234").or(),
+                Wheres.equal("age", "123")
         );
         String sql = query.toSql();
         System.out.println(Arrays.toString(query.getSqlValues()));
@@ -54,7 +56,7 @@ public class SqlMakerTest extends JdbcTest {
         update.target(User.class);
         update.set(user, true);
         update.where(
-                Where.equal("name", "hjx")
+                Wheres.equal("name", "hjx")
         );
         String sql = update.toSql();
         System.out.println(Arrays.toString(update.getSqlValues()));

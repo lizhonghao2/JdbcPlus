@@ -5,7 +5,7 @@ import top.hejiaxuan.util.jdbc.util.EntityUtils;
 import top.hejiaxuan.util.jdbc.util.StringUtils;
 import top.hejiaxuan.util.maker.AbstractMaker;
 import top.hejiaxuan.util.maker.SqlMaker;
-import top.hejiaxuan.util.maker.And;
+import top.hejiaxuan.util.maker.Where;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -67,7 +67,7 @@ public class DefaultInsert extends AbstractMaker implements Insert {
     }
 
     @Override
-    public SqlMaker where(And... ands) {
+    public SqlMaker where(Where... wheres) {
         throw new UnsupportedOperationException("不支持的操作");
     }
 

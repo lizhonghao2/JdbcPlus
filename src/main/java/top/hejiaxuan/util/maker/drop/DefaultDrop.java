@@ -1,7 +1,7 @@
 package top.hejiaxuan.util.maker.drop;
 
 import top.hejiaxuan.util.maker.AbstractMaker;
-import top.hejiaxuan.util.maker.And;
+import top.hejiaxuan.util.maker.Where;
 import top.hejiaxuan.util.maker.SqlMaker;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class DefaultDrop extends AbstractMaker implements Drop {
     }
 
     @Override
-    public SqlMaker where(And... ands) {
+    public SqlMaker where(Where... wheres) {
         throw new UnsupportedOperationException("不支持的操作");
     }
 }

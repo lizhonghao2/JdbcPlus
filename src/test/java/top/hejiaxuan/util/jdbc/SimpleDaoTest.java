@@ -2,8 +2,7 @@ package top.hejiaxuan.util.jdbc;
 
 import org.junit.Test;
 import top.hejiaxuan.entity.User;
-import top.hejiaxuan.util.maker.And;
-import top.hejiaxuan.util.maker.Where;
+import top.hejiaxuan.util.maker.Wheres;
 import top.hejiaxuan.util.maker.delete.DefaultDelete;
 import top.hejiaxuan.util.maker.delete.Delete;
 import top.hejiaxuan.util.maker.update.DefaultUpdate;
@@ -30,7 +29,7 @@ public class SimpleDaoTest extends JdbcTest {
         Delete delete = new DefaultDelete();
         delete.target(User.class);
         delete.where(
-                Where.isNotNull("id")
+                Wheres.isNotNull("id")
         );
         System.out.println(delete.toSql());
         System.out.println(Arrays.toString(delete.getSqlValues()));

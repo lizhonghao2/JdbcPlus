@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import top.hejiaxuan.util.jdbc.EntityMapperFactory;
 import top.hejiaxuan.util.jdbc.EntityTableRowMapper;
 import top.hejiaxuan.util.jdbc.FunctionRowMapper;
-import top.hejiaxuan.util.maker.And;
+import top.hejiaxuan.util.maker.Where;
 import top.hejiaxuan.util.maker.Function;
 import top.hejiaxuan.util.maker.delete.Delete;
 import top.hejiaxuan.util.maker.insert.Insert;
@@ -105,16 +105,16 @@ public abstract class AbstractDao {
      *
      * @param clz
      * @param function
-     * @param ands
+     * @param wheres
      * @param <T>
      * @return
      */
-    final public <T> List<T> function(final Class clz, final Function<T> function, final List<And> ands) {
+    final public <T> List<T> function(final Class clz, final Function<T> function, final List<Where> wheres) {
         Query query = new DefaultQuery();
         query.target(clz);
         query.addSelection(false, function.getSql());
-        for (And and : ands) {
-            query.where(and);
+        for (Where where : wheres) {
+            query.where(where);
         }
         String sql = query.toSql();
         Object[] sqlValues = query.getSqlValues();

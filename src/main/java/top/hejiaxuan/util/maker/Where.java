@@ -1,63 +1,73 @@
 package top.hejiaxuan.util.maker;
 
-import top.hejiaxuan.util.jdbc.util.StringUtils;
-import top.hejiaxuan.util.maker.And;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * 查询条件
+ * where条件 默认使用 and 连接多个条件
  */
 public class Where {
 
-    public static And equal(final String columnName, final Object value) {
-        return new And(StringUtils.append(columnName, " = ? "), value);
+    static final String AND = "AND ";
+
+    static final String OR = "OR ";
+
+    private String column;
+
+    private String connect = AND;
+
+    private List<Object> values;
+
+    //是否有值（null 也代表有值）
+    private boolean hasValue;
+
+    public Where(String column) {
+        this.column = column;
+        this.hasValue = false;
     }
 
-    public static And notEqual(final String columnName, final Object value) {
-        return new And(StringUtils.append(columnName, " != ? "), value);
+    public Where(String column, Object sqlValue) {
+        this.column = column;
+        this.values = new ArrayList<>();
+        this.values.add(sqlValue);
+        this.hasValue = true;
     }
 
-    public static And isNotNull(final String columnName) {
-        return new And(StringUtils.append(columnName, " IS NOT NULL "));
+    public Where(String column, Object[] values) {
+        this.column = column;
+        this.values = Arrays.asList(values);
+        this.hasValue = true;
     }
 
-    public static And isNull(final String columnName) {
-        return new And(StringUtils.append(columnName, " IS NULL "));
+    public Where or() {
+        this.connect = OR;
+        return this;
     }
 
-    public static And greater(final String columnName, final Object value, final boolean andEquals) {
-        if (andEquals) {
-            return new And(StringUtils.append(columnName, " >= ? "), value);
-        }
-        return new And(StringUtils.append(columnName, " > ? "), value);
+    public Where and() {
+        this.connect = AND;
+        return this;
     }
 
-    public static And less(final String columnName, final Object value, final boolean andEquals) {
-        if (andEquals) {
-            return new And(StringUtils.append(columnName, " <= ? "), value);
-        }
-        return new And(StringUtils.append(columnName, " < ? "), value);
+    /**
+     * 获取本次条件的连接符
+     *
+     * @return
+     */
+    public String getConnect() {
+        return connect;
     }
 
-    public static And like(final String columnName, final Object value) {
-        return new And(StringUtils.append(columnName, " like ? "), value);
+    protected String getColumn() {
+        return column;
     }
 
-    public static And in(final String columnName, final Object[] values) {
-        Object[] sqlVal = values;
-        if (sqlVal.length == 0) {
-            sqlVal = new Object[]{null};
-        }
-        int length = sqlVal.length;
-        StringBuffer inSql = new StringBuffer();
-        inSql.append(columnName);
-        inSql.append(" IN ( ");
-        String[] strings = StringUtils.repeat("?", length);
-        inSql.append(StringUtils.join(Arrays.asList(strings), ", "));
-        inSql.append(" ) ");
-        return new And(String.format(inSql.toString(), columnName), sqlVal);
+    protected boolean isHasValue() {
+        return hasValue;
     }
 
+    protected List<Object> getValues() {
+        return values;
+    }
 }

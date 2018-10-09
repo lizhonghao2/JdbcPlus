@@ -1,6 +1,5 @@
 package top.hejiaxuan.util.maker.query;
 
-import top.hejiaxuan.util.maker.And;
 import top.hejiaxuan.util.maker.SqlMaker;
 
 /**

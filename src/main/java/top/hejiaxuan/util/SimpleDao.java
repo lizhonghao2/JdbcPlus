@@ -4,7 +4,7 @@ import org.springframework.util.Assert;
 import top.hejiaxuan.util.jdbc.EntityMapperFactory;
 import top.hejiaxuan.util.jdbc.EntityTableRowMapper;
 import top.hejiaxuan.util.jdbc.util.EntityUtils;
-import top.hejiaxuan.util.maker.Where;
+import top.hejiaxuan.util.maker.Wheres;
 import top.hejiaxuan.util.maker.delete.DefaultDelete;
 import top.hejiaxuan.util.maker.delete.Delete;
 import top.hejiaxuan.util.maker.insert.DefaultInsert;
@@ -65,7 +65,7 @@ public class SimpleDao extends AbstractDao {
     ) {
         Query query = new DefaultQuery();
         query.target(clz);
-        query.where(Where.equal(columnName, columnValue));
+        query.where(Wheres.equal(columnName, columnValue));
         return selectBy(query);
     }
 
@@ -88,8 +88,8 @@ public class SimpleDao extends AbstractDao {
         Query query = new DefaultQuery();
         query.target(clz);
         query.where(
-                Where.equal(columnName1, columnValue1),
-                Where.equal(columnName2, columnValue2)
+                Wheres.equal(columnName1, columnValue1),
+                Wheres.equal(columnName2, columnValue2)
         );
         return selectBy(query);
     }
@@ -109,7 +109,7 @@ public class SimpleDao extends AbstractDao {
     ) {
         Query query = new DefaultQuery();
         query.target(clz);
-        query.where(Where.equal(columnName, columnValue));
+        query.where(Wheres.equal(columnName, columnValue));
         return selectOneBy(query);
     }
 
@@ -132,8 +132,8 @@ public class SimpleDao extends AbstractDao {
         Query query = new DefaultQuery();
         query.target(clz);
         query.where(
-                Where.equal(columnName1, columnValue1),
-                Where.equal(columnName2, columnValue2)
+                Wheres.equal(columnName1, columnValue1),
+                Wheres.equal(columnName2, columnValue2)
         );
         return selectOneBy(query);
     }
@@ -177,7 +177,7 @@ public class SimpleDao extends AbstractDao {
     public Integer deleteBy(final Class clz, final String columnName, final Object columnValue) {
         Delete delete = new DefaultDelete();
         delete.target(clz);
-        delete.where(Where.equal(columnName, columnValue));
+        delete.where(Wheres.equal(columnName, columnValue));
         return deleteBy(delete);
     }
 
@@ -199,8 +199,8 @@ public class SimpleDao extends AbstractDao {
         Delete delete = new DefaultDelete();
         delete.target(clz);
         delete.where(
-                Where.equal(columnName1, columnValue1),
-                Where.equal(columnName2, columnValue2)
+                Wheres.equal(columnName1, columnValue1),
+                Wheres.equal(columnName2, columnValue2)
         );
         return deleteBy(delete);
     }
@@ -244,7 +244,7 @@ public class SimpleDao extends AbstractDao {
         Update update = new DefaultUpdate();
         update.target(clz);
         update.set(entity, selective);
-        update.where(Where.equal(mapper.getIdName(), id));
+        update.where(Wheres.equal(mapper.getIdName(), id));
         return updateBy(update);
     }
 

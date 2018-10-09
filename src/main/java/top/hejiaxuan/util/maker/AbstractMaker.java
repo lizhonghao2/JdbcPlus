@@ -25,7 +25,7 @@ public abstract class AbstractMaker implements SqlMaker {
     protected Object[] sqlValues = {};
 
     //sql中的条件
-    protected List<And> ands = new ArrayList<>();
+    protected List<Where> wheres = new ArrayList<>();
 
     //sql
     protected String sql;
@@ -143,13 +143,13 @@ public abstract class AbstractMaker implements SqlMaker {
     }
 
     @Override
-    final public SqlMaker where(List<And> ands) {
+    final public SqlMaker where(List<Where> wheres) {
         List<Object> objects = new ArrayList<>(makeSqlValue());
-        for (And and : ands) {
-            this.ands.add(and);
+        for (Where where : wheres) {
+            this.wheres.add(where);
             //是否有值
-            if (and.isHasValue()) {
-                for (Object value : and.getSqlValues()) {
+            if (where.isHasValue()) {
+                for (Object value : where.getValues()) {
                     objects.add(value);
                 }
             }
@@ -159,8 +159,8 @@ public abstract class AbstractMaker implements SqlMaker {
     }
 
     @Override
-    public SqlMaker where(And... ands) {
-        return where(Arrays.asList(ands));
+    public SqlMaker where(Where... wheres) {
+        return where(Arrays.asList(wheres));
     }
 
     /**
@@ -170,14 +170,14 @@ public abstract class AbstractMaker implements SqlMaker {
      */
     final protected String sqlWhere() {
         StringBuilder sql = new StringBuilder();
-        if (ands.size() != 0) {
+        if (wheres.size() != 0) {
             sql.append("WHERE ");
-            for (int i = 0; i < ands.size(); i++) {
-                And and = ands.get(i);
-                sql.append(StringUtils.append(and.getSql()));
-                if (i != ands.size() - 1) {
-                    sql.append(StringUtils.AND);
+            for (int i = 0; i < wheres.size(); i++) {
+                Where where = wheres.get(i);
+                if (i != 0) {
+                    sql.append(where.getConnect());
                 }
+                sql.append(StringUtils.append(where.getColumn()));
             }
         }
         return sql.toString();

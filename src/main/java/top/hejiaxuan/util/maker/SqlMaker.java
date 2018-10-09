@@ -66,11 +66,11 @@ public interface SqlMaker {
     /**
      * 添加条件
      *
-     * @param ands
+     * @param wheres
      * @return
      */
-    SqlMaker where(And... ands);
+    SqlMaker where(Where... wheres);
 
-    SqlMaker where(List<And> ands);
+    SqlMaker where(List<Where> wheres);
 
 }
