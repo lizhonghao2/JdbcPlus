@@ -1,24 +1,29 @@
 package top.hejiaxuan.entity;
 
-import top.hejiaxuan.util.jdbc.annotation.Column;
-import top.hejiaxuan.util.jdbc.annotation.ID;
-import top.hejiaxuan.util.jdbc.annotation.Table;
 
-@Table(value = "user")
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.Date;
+
+@Table(name = "user")
 public class User {
 
-    @Column(value = "name")
+    @Column(name = "user_name")
     private String name;
 
-    @ID
-    @Column(value = "id")
-    private String id;
+    @Id
+    @Column(name = "id")
+    private Integer id;
 
-    @Column(value = "age")
-    private int age;
+    @Column(name = "age")
+    private Integer age;
 
-    @Column(value = "mark")
-    private int mark;
+    @Column(name = "mark")
+    private String mark;
+
+    @Column(name = "create_date")
+    private Date createDate;
 
     public void setName(String name) {
         this.name = name;
@@ -28,38 +33,46 @@ public class User {
         return this.name;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return this.age;
     }
 
-    public void setMark(int mark) {
+    public void setMark(String mark) {
         this.mark = mark;
     }
 
-    public int getMark() {
+    public String getMark() {
         return this.mark;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("[");
-        sb.append("name:").append(name).append(";    ");
-        sb.append("id:").append(id).append(";    ");
-        sb.append("age:").append(age).append(";    ");
-        sb.append("mark:").append(mark).append(";    ");
-        sb.append("]");
-        return sb.toString();
+        return "User{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                ", age=" + age +
+                ", mark='" + mark + '\'' +
+                ", createDate=" + createDate +
+                '}';
     }
 }

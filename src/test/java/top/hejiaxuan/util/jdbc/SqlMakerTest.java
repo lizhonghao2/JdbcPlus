@@ -35,7 +35,7 @@ public class SqlMakerTest extends JdbcTest {
     public void insert() {
         User user = new User();
         user.setAge(10);
-        user.setId("10");
+        user.setId(123);
         user.setName("hjx");
         Insert insert = new DefaultInsert();
         insert.target(User.class);
@@ -50,7 +50,7 @@ public class SqlMakerTest extends JdbcTest {
     public void update() {
         User user = new User();
         user.setAge(10);
-        user.setId("10");
+        user.setId(234);
         user.setName("hjx");
         Update update = new DefaultUpdate();
         update.target(User.class);

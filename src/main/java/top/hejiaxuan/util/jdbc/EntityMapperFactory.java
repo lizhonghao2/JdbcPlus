@@ -27,7 +27,6 @@ public class EntityMapperFactory {
      */
     public static EntityTableRowMapper getMapper(Class clz) {
         Assert.notNull(clz);
-        Assert.isTrue(EntityUtils.hasAnnotation(clz, Table.class), "class 缺少 Table 注解");
         EntityTableRowMapper<?> entityTableRowMapper = null;
         if (!entityTableRowMapperMap.containsKey(clz)) {
             synchronized (EntityMapperFactory.class) {
