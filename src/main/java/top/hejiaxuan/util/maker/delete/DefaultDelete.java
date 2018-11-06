@@ -12,6 +12,7 @@ import java.util.List;
  * @author hjx
  */
 public class DefaultDelete extends AbstractMaker implements Delete {
+
     @Override
     protected String makeSql() {
         StringBuilder sql = new StringBuilder();
@@ -26,4 +27,5 @@ public class DefaultDelete extends AbstractMaker implements Delete {
     protected List<Object> makeSqlValue() {
         return Arrays.asList(sqlValues);
     }
+
 }

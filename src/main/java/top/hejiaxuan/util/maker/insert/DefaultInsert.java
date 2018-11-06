@@ -39,8 +39,12 @@ public class DefaultInsert extends AbstractMaker implements Insert {
 
         for (Map.Entry<String, Field> stringFieldEntry : columnFieldMapper.entrySet()) {
             Field field = stringFieldEntry.getValue();
+            Object value = EntityUtils.getValue(entity, field);
+            if (value == null) {
+                continue;
+            }
             insertColumns.add(stringFieldEntry.getKey());
-            insertColumnValues.add(EntityUtils.getValue(entity, field));
+            insertColumnValues.add(value);
         }
         return true;
     }

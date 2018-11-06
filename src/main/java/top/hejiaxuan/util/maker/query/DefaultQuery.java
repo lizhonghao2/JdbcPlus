@@ -42,13 +42,13 @@ public class DefaultQuery extends AbstractMaker implements Query {
 
     @Override
     public Query orderBy(String orderBy, String type) {
-        sqlOrderBy = MessageFormat.format("ORDER BY {0} {1} ", orderBy, type);
+        sqlOrderBy = StringUtils.append("ORDER BY ", orderBy, StringUtils.SPACE + type + StringUtils.SPACE);
         return this;
     }
 
     @Override
     public Query limit(int line, int num) {
-        this.sqlLimit = MessageFormat.format("LIMIT {0}, {1} ", line, num);
+        this.sqlLimit = StringUtils.append("LIMIT ", line, StringUtils.COMMA + num + StringUtils.SPACE);
         return this;
     }
 

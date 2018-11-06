@@ -26,8 +26,13 @@ public class DefaultUpdate extends AbstractMaker implements Update {
         return this;
     }
 
+    /**
+     * @param entity
+     * @param ignoreNull 是否忽略null值
+     * @return
+     */
     @Override
-    public Update set(final Object entity, final boolean selective) {
+    public Update set(final Object entity, final boolean ignoreNull) {
         Assert.notNull(entity);
         //重置被更新字段列表
         this.updataColumn = new ArrayList<>();
@@ -41,7 +46,7 @@ public class DefaultUpdate extends AbstractMaker implements Update {
             }
             Field field = columnFieldMapper.get(columnName);
             Object value = EntityUtils.getValue(entity, field);
-            if (selective && value == null) {
+            if (ignoreNull && value == null) {
                 continue;
             }
             updataColumn.add(columnName);

@@ -11,9 +11,9 @@ public interface Update extends SqlMaker {
      * set
      *
      * @param entity
-     * @param selective 是否忽略null值
+     * @param ignoreNull 是否忽略null值
      * @return
      */
-    Update set(final Object entity, boolean selective);
+    Update set(final Object entity, boolean ignoreNull);
 
 }

@@ -9,7 +9,7 @@ import java.beans.PropertyVetoException;
 
 public class JdbcTest {
 
-    SimpleDao simpleDao = null;
+    public SimpleDao simpleDao = null;
     JdbcTemplate jdbcTemplate = null;
 
     {
@@ -26,8 +26,9 @@ public class JdbcTest {
         DataSource dataSource = comboPooledDataSource;
         jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.setDataSource(dataSource);
+
         simpleDao = new SimpleDao();
-        simpleDao.setDataSource(dataSource);
+        simpleDao.setJdbcTemplate(jdbcTemplate);
     }
 
 }

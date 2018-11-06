@@ -25,11 +25,6 @@ import java.util.List;
  */
 public abstract class AbstractDao {
 
-    /**
-     * 数据源
-     */
-    protected DataSource dataSource;
-
     protected JdbcTemplate jdbcTemplate;
 
     protected Log logger = LogFactory.getLog(AbstractDao.class);
@@ -126,13 +121,8 @@ public abstract class AbstractDao {
     }
 
     /* Getter and Setter */
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
-
-    public DataSource getDataSource() {
-        return dataSource;
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public JdbcTemplate getJdbcTemplate() {

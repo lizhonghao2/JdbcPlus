@@ -31,7 +31,7 @@ public class SimpleDao extends AbstractDao {
      * @param <T>
      * @return
      */
-    public <T> List<T> select(final Class<T> clz) {
+    final public <T> List<T> select(final Class<T> clz) {
         Query query = new DefaultQuery();
         query.target(clz);
         return selectBy(query);
@@ -45,7 +45,7 @@ public class SimpleDao extends AbstractDao {
      * @param <T>
      * @return
      */
-    public <T> T selectById(final Class<T> clz, final Object id) {
+    final public <T> T selectById(final Class<T> clz, final Object id) {
         EntityTableRowMapper mapper = EntityMapperFactory.getMapper(clz);
         return selectOneBy(clz, mapper.getIdName(), id);
     }
@@ -59,7 +59,7 @@ public class SimpleDao extends AbstractDao {
      * @param <T>
      * @return
      */
-    public <T> List<T> selectBy(
+    final public <T> List<T> selectBy(
             final Class<T> clz,
             final String columnName, final Object columnValue
     ) {
@@ -80,7 +80,7 @@ public class SimpleDao extends AbstractDao {
      * @param <T>
      * @return
      */
-    public <T> List<T> selectBy(
+    final public <T> List<T> selectBy(
             final Class<T> clz,
             final String columnName1, final Object columnValue1,
             final String columnName2, final Object columnValue2
@@ -103,7 +103,7 @@ public class SimpleDao extends AbstractDao {
      * @param <T>
      * @return
      */
-    public <T> T selectOneBy(
+    final public <T> T selectOneBy(
             final Class<T> clz,
             final String columnName, final Object columnValue
     ) {
@@ -124,7 +124,7 @@ public class SimpleDao extends AbstractDao {
      * @param <T>
      * @return
      */
-    public <T> T selectOneBy(
+    final public <T> T selectOneBy(
             final Class<T> clz,
             final String columnName1, final Object columnValue1,
             final String columnName2, final Object columnValue2
@@ -145,7 +145,7 @@ public class SimpleDao extends AbstractDao {
      * @param <T>
      * @return
      */
-    public <T> T selectOneBy(final Query query) {
+    final public <T> T selectOneBy(final Query query) {
         List<T> list = selectBy(query);
         Assert.isTrue(list.size() <= 1, "查询结果数量大于1条!");
         if (list.size() != 0) {
@@ -161,7 +161,7 @@ public class SimpleDao extends AbstractDao {
      * @param id
      * @return
      */
-    public Integer deleteById(final Class clz, final Object id) {
+    final public Integer deleteById(final Class clz, final Object id) {
         EntityTableRowMapper mapper = EntityMapperFactory.getMapper(clz);
         return deleteBy(clz, mapper.getIdName(), id);
     }
@@ -174,7 +174,7 @@ public class SimpleDao extends AbstractDao {
      * @param columnValue
      * @return
      */
-    public Integer deleteBy(final Class clz, final String columnName, final Object columnValue) {
+    final public Integer deleteBy(final Class clz, final String columnName, final Object columnValue) {
         Delete delete = new DefaultDelete();
         delete.target(clz);
         delete.where(Wheres.equal(columnName, columnValue));
@@ -191,7 +191,7 @@ public class SimpleDao extends AbstractDao {
      * @param columnValue2
      * @return
      */
-    public Integer deleteBy(
+    final public Integer deleteBy(
             final Class clz,
             final String columnName1, final Object columnValue1,
             final String columnName2, final Object columnValue2
@@ -211,7 +211,7 @@ public class SimpleDao extends AbstractDao {
      * @param entity
      * @return
      */
-    public Integer insert(final Object entity) {
+    final public Integer insert(final Object entity) {
         Insert insert = new DefaultInsert();
         insert.target(entity.getClass());
         insert.insert(entity);
@@ -224,7 +224,7 @@ public class SimpleDao extends AbstractDao {
      * @param entity
      * @return
      */
-    public Integer updateById(final Object entity) {
+    final public Integer updateById(final Object entity) {
         return updateById(entity, false);
     }
 
@@ -233,17 +233,17 @@ public class SimpleDao extends AbstractDao {
      * <p>
      *
      * @param entity
-     * @param selective 是否忽略 null
+     * @param ignoreNull 是否忽略 null
      * @return
      */
-    public Integer updateById(final Object entity, final boolean selective) {
+    final public Integer updateById(final Object entity, final boolean ignoreNull) {
         Class clz = entity.getClass();
         EntityTableRowMapper mapper = EntityMapperFactory.getMapper(clz);
         Field field = EntityUtils.idField(clz);
         Object id = EntityUtils.getValue(entity, field);
         Update update = new DefaultUpdate();
         update.target(clz);
-        update.set(entity, selective);
+        update.set(entity, ignoreNull);
         update.where(Wheres.equal(mapper.getIdName(), id));
         return updateBy(update);
     }

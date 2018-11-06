@@ -58,7 +58,7 @@ public abstract class AbstractMaker implements SqlMaker {
      * @return
      */
     final protected boolean checkColumn(final String columnName) {
-        Assert.notNull(entityTableRowMapper, "没有指定 entity.");
+        Assert.notNull(entityTableRowMapper, "没有指定 entity。");
         Class tableClass = entityTableRowMapper.getTableClass();
         if (tableClass == null) {
             return true;
@@ -68,7 +68,7 @@ public abstract class AbstractMaker implements SqlMaker {
             return true;
         }
         throw new UnsupportedOperationException(
-                "字段: >" + columnName + "< 不存在于 >" + tableClass.getSimpleName() + "< 表中.");
+                "字段: >" + columnName + "< 不存在于 >" + tableClass.getSimpleName() + "< 表中。");
     }
 
     /**
@@ -127,13 +127,13 @@ public abstract class AbstractMaker implements SqlMaker {
 
     @Override
     public Class<?> getEntity() {
-        Assert.notNull(entityTableRowMapper, "没有指定 entity.");
+        Assert.notNull(entityTableRowMapper, "没有指定 entity。");
         return entityTableRowMapper.getTableClass();
     }
 
     @Override
     public String getTableName() {
-        Assert.notNull(entityTableRowMapper, "没有指定 entity.");
+        Assert.notNull(entityTableRowMapper, "没有指定 entity。");
         return entityTableRowMapper.getTableName();
     }
 
@@ -160,6 +160,9 @@ public abstract class AbstractMaker implements SqlMaker {
 
     @Override
     public SqlMaker where(Where... wheres) {
+        for (Where where : wheres) {
+            checkColumn(where.getColumn());
+        }
         return where(Arrays.asList(wheres));
     }
 
@@ -177,7 +180,7 @@ public abstract class AbstractMaker implements SqlMaker {
                 if (i != 0) {
                     sql.append(where.getConnect());
                 }
-                sql.append(StringUtils.append(where.getColumn()));
+                sql.append(StringUtils.append(where.getSql()));
             }
         }
         return sql.toString();

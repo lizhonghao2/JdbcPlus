@@ -13,6 +13,8 @@ public class Where {
 
     static final String OR = "OR ";
 
+    private String sql;
+
     private String column;
 
     private String connect = AND;
@@ -22,19 +24,37 @@ public class Where {
     //是否有值（null 也代表有值）
     private boolean hasValue;
 
-    public Where(String column) {
+    /**
+     * @param column 被操作的列
+     * @param sql    操作的sql
+     */
+    public Where(String column, String sql) {
         this.column = column;
+        this.sql = sql;
         this.hasValue = false;
+        this.values = new ArrayList<>();
     }
 
-    public Where(String column, Object sqlValue) {
+    /**
+     * @param column 被操作的列
+     * @param sql    操作的sql
+     * @param value sql的参数
+     */
+    public Where(String column, String sql, Object value) {
+        this.sql = sql;
         this.column = column;
         this.values = new ArrayList<>();
-        this.values.add(sqlValue);
+        this.values.add(value);
         this.hasValue = true;
     }
 
-    public Where(String column, Object[] values) {
+    /**
+     * @param column 被操作的列
+     * @param sql    操作的sql
+     * @param values sql的参数
+     */
+    public Where(String column, String sql, Object[] values) {
+        this.sql = sql;
         this.column = column;
         this.values = Arrays.asList(values);
         this.hasValue = true;
@@ -59,8 +79,8 @@ public class Where {
         return connect;
     }
 
-    protected String getColumn() {
-        return column;
+    protected String getSql() {
+        return sql;
     }
 
     protected boolean isHasValue() {
@@ -69,5 +89,9 @@ public class Where {
 
     protected List<Object> getValues() {
         return values;
+    }
+
+    public String getColumn() {
+        return column;
     }
 }
