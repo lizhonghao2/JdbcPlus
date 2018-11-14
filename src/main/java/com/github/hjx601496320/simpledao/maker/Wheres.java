@@ -8,14 +8,17 @@ import java.util.Arrays;
  * 查询条件
  */
 public class Wheres {
-
-
+    
     public static Where equal(final String columnName, final Object value) {
         return new Where(columnName, Where.PLACEHOLDER + " = ? ", value);
     }
 
     public static Where notEqual(final String columnName, final Object value) {
         return new Where(columnName, Where.PLACEHOLDER + " != ? ", value);
+    }
+
+    public static Where not(final String columnName, final Object value) {
+        return new Where(columnName, Where.PLACEHOLDER + " <> ? ", value);
     }
 
     public static Where isNotNull(final String columnName) {
@@ -44,19 +47,22 @@ public class Wheres {
         return new Where(columnName, Where.PLACEHOLDER + " like ? ", value);
     }
 
+    public static Where betweenAnd(final String columnName, final Object value1st, final Object value2nd) {
+        return new Where(columnName, Where.PLACEHOLDER + " between ? and ? ", new Object[]{value1st, value2nd});
+    }
+
     public static Where in(final String columnName, final Object[] values) {
         Object[] sqlVal = values;
         if (sqlVal.length == 0) {
             sqlVal = new Object[]{null};
         }
-        int length = sqlVal.length;
         StringBuffer inSql = new StringBuffer();
         inSql.append(Where.PLACEHOLDER);
         inSql.append(" IN ( ");
-        String[] strings = StringUtils.repeat("?", length);
+        String[] strings = StringUtils.repeat("?", sqlVal.length);
         inSql.append(StringUtils.join(Arrays.asList(strings), ", "));
         inSql.append(" ) ");
-        return new Where(columnName, String.format(inSql.toString(), columnName), sqlVal);
+        return new Where(columnName, inSql.toString(), sqlVal);
     }
 
 }

@@ -80,4 +80,12 @@ public class WheresTest {
         }
         System.out.println(System.currentTimeMillis() - currentTimeMillis);
     }
+
+    @Test
+    public void betweenAnd() {
+        Where where = Wheres.betweenAnd("age", "123", "678");
+        System.out.println(where.getSql());
+        System.out.println(where.getColumn());
+        System.out.println(Arrays.toString(where.getValues().toArray()));
+    }
 }
