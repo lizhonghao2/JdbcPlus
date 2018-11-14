@@ -35,6 +35,7 @@ public class User {
 simpleDao.insert
 simpleDao.selectBy
 simpleDao.selectById
-...
+...其他的数据库操作...
+
 ```
 
