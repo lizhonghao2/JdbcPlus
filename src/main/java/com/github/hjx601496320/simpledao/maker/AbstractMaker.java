@@ -57,30 +57,14 @@ public abstract class AbstractMaker implements SqlMaker {
      * @param columnName
      * @return
      */
-    final protected boolean checkColumn(final String columnName) {
+    protected final void checkColumn(final String columnName) {
         Assert.notNull(entityTableRowMapper, "没有指定 entity。");
         Class tableClass = entityTableRowMapper.getTableClass();
-        if (tableClass == null) {
-            return true;
+        String name = getColumnName(columnName);
+        if (name == null) {
+            throw new UnsupportedOperationException(
+                    "字段: >" + columnName + "< 不存在于 >" + tableClass.getSimpleName() + "< 表中。");
         }
-        Set<String> columnNames = entityTableRowMapper.getColumnNames();
-        if (columnNames.contains(columnName)) {
-            return true;
-        }
-        throw new UnsupportedOperationException(
-                "字段: >" + columnName + "< 不存在于 >" + tableClass.getSimpleName() + "< 表中。");
-    }
-
-    /**
-     * 获取数据库的字段名称.
-     * 如果在非sql模式下, 根据传入的name取得相应的数据库中的字段
-     *
-     * @param name
-     * @return
-     */
-    final protected String getColumnName(final String name) {
-        Map<String, String> fieldNameColumnMapper = entityTableRowMapper.getFieldNameColumnMapper();
-        return fieldNameColumnMapper.get(name);
     }
 
     /**
@@ -143,6 +127,14 @@ public abstract class AbstractMaker implements SqlMaker {
     }
 
     @Override
+    public SqlMaker where(Where... wheres) {
+        for (Where where : wheres) {
+            checkColumn(where.getColumn());
+        }
+        return where(Arrays.asList(wheres));
+    }
+
+    @Override
     final public SqlMaker where(List<Where> wheres) {
         List<Object> objects = new ArrayList<>(makeSqlValue());
         for (Where where : wheres) {
@@ -156,14 +148,6 @@ public abstract class AbstractMaker implements SqlMaker {
         }
         this.sqlValues = objects.toArray();
         return this;
-    }
-
-    @Override
-    public SqlMaker where(Where... wheres) {
-        for (Where where : wheres) {
-            checkColumn(where.getColumn());
-        }
-        return where(Arrays.asList(wheres));
     }
 
     /**
@@ -180,10 +164,30 @@ public abstract class AbstractMaker implements SqlMaker {
                 if (i != 0) {
                     sql.append(where.getConnect());
                 }
-                sql.append(StringUtils.append(where.getSql()));
+                sql.append(StringUtils.append(where.getSql().replace(Where.PLACEHOLDER, getColumnName(where.getColumn()))));
             }
         }
         return sql.toString();
+    }
+
+    /**
+     * 获取数据库的字段名称.
+     *
+     * @param name
+     * @return
+     */
+    final protected String getColumnName(final String name) {
+        //columnNames 中包含name, 说明name是数据库中的column
+        Set<String> columnNames = entityTableRowMapper.getColumnNames();
+        if (columnNames.contains(name)) {
+            return name;
+        }
+        Map<String, String> fieldNameColumnMapper = entityTableRowMapper.getFieldNameColumnMapper();
+        //说明name是entity中的属性名称, 根据属性名称查找数据库中的column
+        if (fieldNameColumnMapper.containsKey(name)) {
+            return fieldNameColumnMapper.get(name);
+        }
+        return null;
     }
 
     protected abstract String makeSql();

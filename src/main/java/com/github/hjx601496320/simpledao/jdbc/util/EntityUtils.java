@@ -257,13 +257,13 @@ public class EntityUtils {
         return false;
     }
 
-    public static boolean hasAnnotation(Class<?> clz, Class<? extends Annotation> annotationClass) {
+    static boolean hasAnnotation(Class<?> clz, Class<? extends Annotation> annotationClass) {
         Assert.notNull(clz, CLASS_NOT_NULL);
         Assert.notNull(annotationClass, ANNOTATIONCLASS_NOT_NULL);
         return clz.isAnnotationPresent(annotationClass);
     }
 
-    public static boolean hasAnnotation(Field field, Class<? extends Annotation> annotationClass) {
+    static boolean hasAnnotation(Field field, Class<? extends Annotation> annotationClass) {
         Assert.notNull(field, FIELD_NOT_NULL);
         Assert.notNull(annotationClass, ANNOTATIONCLASS_NOT_NULL);
         return field.isAnnotationPresent(annotationClass);

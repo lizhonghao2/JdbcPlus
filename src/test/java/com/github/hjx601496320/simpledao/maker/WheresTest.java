@@ -69,4 +69,15 @@ public class WheresTest {
         System.out.println(where.getColumn());
         System.out.println(Arrays.toString(where.getValues().toArray()));
     }
+
+
+    @Test
+    public void replace() {
+        long currentTimeMillis = System.currentTimeMillis();
+        for (int i = 0; i < 100000; i++) {
+            String sql = "123 123 123 #{NAME}";
+            sql.replace("#{NAME}", "qweqwe");
+        }
+        System.out.println(System.currentTimeMillis() - currentTimeMillis);
+    }
 }

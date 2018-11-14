@@ -34,6 +34,7 @@ public class DefaultQuery extends AbstractMaker implements Query {
         for (String columnName : list) {
             if (check) {
                 checkColumn(columnName);
+                selection.add(getColumnName(columnName));
             }
             selection.add(columnName);
         }
@@ -42,7 +43,12 @@ public class DefaultQuery extends AbstractMaker implements Query {
 
     @Override
     public Query orderBy(String orderBy, String type) {
-        sqlOrderBy = StringUtils.append("ORDER BY ", orderBy, StringUtils.SPACE + type + StringUtils.SPACE);
+        String[] split = orderBy.split(",");
+        for (int i = 0; i < split.length; i++) {
+            split[i] = getColumnName(split[i].trim());
+        }
+        sqlOrderBy = StringUtils.append("ORDER BY ", StringUtils.join(Arrays.asList(split), StringUtils.COMMA),
+                StringUtils.SPACE + type + StringUtils.SPACE);
         return this;
     }
 

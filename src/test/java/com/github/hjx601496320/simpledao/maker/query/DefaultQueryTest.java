@@ -28,11 +28,16 @@ public class DefaultQueryTest {
 
     @Test
     public void orderBy() {
-        DefaultQuery query = new DefaultQuery();
-        query.target(User.class);
-        query.orderBy("user_name,age", "DESC");
-        System.out.println(query.makeSql());
-        System.out.println(Arrays.toString(query.makeSqlValue().toArray()));
+        long currentTimeMillis = System.currentTimeMillis();
+        for (int i = 0; i < 100; i++) {
+            DefaultQuery query = new DefaultQuery();
+            query.target(User.class);
+            query.orderBy("name ,  age", "DESC");
+            String sql = query.makeSql();
+            System.out.println(sql);
+            System.out.println(Arrays.toString(query.makeSqlValue().toArray()));
+        }
+        System.out.println(System.currentTimeMillis() - currentTimeMillis);
     }
 
     @Test
@@ -40,7 +45,7 @@ public class DefaultQueryTest {
         DefaultQuery query = new DefaultQuery();
         query.target(User.class);
         query.limit(0, 10);
-        query.orderBy("user_name,age", "DESC");
+        query.orderBy("name,age", "DESC");
         System.out.println(query.makeSql());
         System.out.println(Arrays.toString(query.makeSqlValue().toArray()));
 

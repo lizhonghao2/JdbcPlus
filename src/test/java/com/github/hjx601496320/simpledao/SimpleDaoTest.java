@@ -50,7 +50,7 @@ public class SimpleDaoTest extends JdbcTest {
     public void selectBy1() {
         List<User> users = simpleDao.selectBy(
                 User.class,
-                "user_name", "123",
+                "name", "123",
                 "age", "18"
         );
         System.out.println(users);

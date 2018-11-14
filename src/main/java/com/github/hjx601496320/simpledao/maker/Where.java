@@ -9,6 +9,8 @@ import java.util.List;
  */
 public class Where {
 
+    protected static final String PLACEHOLDER = "#{COLUMN}";
+
     static final String AND = "AND ";
 
     static final String OR = "OR ";
@@ -38,7 +40,7 @@ public class Where {
     /**
      * @param column 被操作的列
      * @param sql    操作的sql
-     * @param value sql的参数
+     * @param value  sql的参数
      */
     public Where(String column, String sql, Object value) {
         this.sql = sql;
