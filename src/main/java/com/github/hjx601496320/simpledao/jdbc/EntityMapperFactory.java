@@ -29,7 +29,9 @@ public class EntityMapperFactory {
         EntityTableRowMapper<?> entityTableRowMapper = null;
         if (!entityTableRowMapperMap.containsKey(clz)) {
             synchronized (EntityMapperFactory.class) {
-                if (entityTableRowMapperMap.containsKey(clz)) return entityTableRowMapperMap.get(clz);
+                if (entityTableRowMapperMap.containsKey(clz)) {
+                    return entityTableRowMapperMap.get(clz);
+                }
                 entityTableRowMapper = new EntityTableRowMapper();
                 entityTableRowMapper.setTableClass(clz);
                 entityTableRowMapper.setTableName(EntityUtils.tableName(clz));

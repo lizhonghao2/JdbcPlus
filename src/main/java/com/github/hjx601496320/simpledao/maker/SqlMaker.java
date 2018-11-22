@@ -64,13 +64,19 @@ public interface SqlMaker {
     EntityTableRowMapper getEntityTableRowMapper();
 
     /**
-     * 添加条件
+     * 添加条件(可变参数类型)
      *
      * @param wheres
      * @return
      */
     SqlMaker where(Where... wheres);
 
+    /**
+     * 添加条件(List)
+     *
+     * @param wheres
+     * @return
+     */
     SqlMaker where(List<Where> wheres);
 
 }

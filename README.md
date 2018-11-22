@@ -9,23 +9,35 @@
 SimpleDao simpleDao = new SimpleDao();
 simpleDao.setJdbcTemplate(jdbcTemplate);
 
-//Entity 添加注解
-import Column;
-import ID;
-import Table;
+import java.util.Date;
+import com.github.hjx601496320.simpledao.jdbc.annotation.ID;
+import com.github.hjx601496320.simpledao.jdbc.annotation.Column;
+import com.github.hjx601496320.simpledao.jdbc.annotation.Table;
 
-@Table("p_user")//与数据库表明对应
+// 表示一张表 value为数据库表名
+@Table(value="user")
 public class User {
 
-    @ID // 标示为主键
-    @Column("anInt") //标示一个字段, 对应数据库字段名称
-    private String anInt;
+    @Column(value="name")
+    private String name;
 
-    @Column("created_time")
-    private Date createTime;
+    // 表示一个id（一个class限制一个id）
+    @ID 
+    // 表示一个字段 value为数据库字段名
+    @Column(value="id") 
+    private int id;
 
-    @Column("status")
-    private Integer status;
+    @Column(value="age")
+    private int age;
+
+    @Column(value="mark")
+    private String mark;
+
+    @Column(value="create_date")
+    private Date createDate;
+
+    @Column(value="status")
+    private int status;
     ...
     get...
     set...
@@ -42,7 +54,10 @@ public class User {
 /*
 
 /**********插入数据**********/
+//插入单条记录
 simpleDao.insert(User user);
+//插入多条数据(拼接sql形式)
+simpleDao.insertBatch(User.class, list);
 
 /**********查询数据**********/
 //查出所有的User
