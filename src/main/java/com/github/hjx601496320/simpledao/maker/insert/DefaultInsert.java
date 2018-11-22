@@ -22,7 +22,12 @@ public class DefaultInsert extends AbstractMaker implements Insert {
 
     private List<String> insertColumns;
 
-    private List<Object> insertColumnValues;
+    private List<Object> insertColumnValues = new ArrayList();
+
+    /**
+     * 插入数据的数量
+     */
+    private int insertCount = 0;
 
     /**
      * 插入数据
@@ -32,11 +37,9 @@ public class DefaultInsert extends AbstractMaker implements Insert {
      */
     @Override
     public boolean insert(Object entity) {
-        Assert.notNull(entity);
+        Assert.notNull(entity, "插入对象不能为 NULL");
         Map<String, Field> columnFieldMapper = entityTableRowMapper.getColumnFieldMapper();
         insertColumns = new ArrayList(columnFieldMapper.size());
-        insertColumnValues = new ArrayList(columnFieldMapper.size());
-
         for (Map.Entry<String, Field> stringFieldEntry : columnFieldMapper.entrySet()) {
             Field field = stringFieldEntry.getValue();
             Object value = EntityUtils.getValue(entity, field);
@@ -46,6 +49,8 @@ public class DefaultInsert extends AbstractMaker implements Insert {
             insertColumns.add(stringFieldEntry.getKey());
             insertColumnValues.add(value);
         }
+        //添加插入数量
+        insertCount++;
         return true;
     }
 
@@ -55,10 +60,16 @@ public class DefaultInsert extends AbstractMaker implements Insert {
         int size = insertColumns.size();
         builder.append("INSERT INTO ").append(getTableName()).append(StringUtils.SPACE);
         builder.append(StringUtils.append("( ", StringUtils.join(insertColumns, ", "), " ) "));
-        builder.append("VALUES ( ");
-        String[] repeat = StringUtils.repeat("?", size);
-        builder.append(StringUtils.join(Arrays.asList(repeat), ", "));
-        builder.append(" ) ");
+        builder.append("VALUES ");
+        for (int i = 0; i < insertCount; i++) {
+            builder.append("( ");
+            String[] repeat = StringUtils.repeat("?", size);
+            builder.append(StringUtils.join(Arrays.asList(repeat), ", "));
+            builder.append(" ) ");
+            if (i != insertCount - 1) {
+                builder.append(StringUtils.COMMA);
+            }
+        }
         return builder.toString();
     }
 

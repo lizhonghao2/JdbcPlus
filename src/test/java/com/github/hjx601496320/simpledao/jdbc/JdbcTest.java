@@ -21,8 +21,8 @@ public class JdbcTest {
         }
         comboPooledDataSource.setJdbcUrl(
                 "jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&characterEncoding=utf-8");
-        comboPooledDataSource.setUser("root");
-        comboPooledDataSource.setPassword("00000");
+        comboPooledDataSource.setUser("debian-sys-maint");
+        comboPooledDataSource.setPassword("cDjhZo5Tdul66r8E");
         DataSource dataSource = comboPooledDataSource;
         jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.setDataSource(dataSource);

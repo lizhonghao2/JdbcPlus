@@ -219,6 +219,23 @@ public class SimpleDao extends AbstractDao {
     }
 
     /**
+     * 批量插入
+     *
+     * @param clz
+     * @param entities
+     * @return
+     */
+    final public Integer insertBatch(Class clz, final List entities) {
+        Insert insert = new DefaultInsert();
+        insert.target(clz);
+        for (int i = 0; i < entities.size(); i++) {
+            Object entity = entities.get(i);
+            insert.insert(entity);
+        }
+        return insertBy(insert);
+    }
+
+    /**
      * 根据id更新数据
      *
      * @param entity

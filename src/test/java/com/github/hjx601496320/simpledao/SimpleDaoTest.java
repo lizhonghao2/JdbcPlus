@@ -8,24 +8,39 @@ import com.github.hjx601496320.simpledao.maker.delete.Delete;
 import com.github.hjx601496320.simpledao.maker.query.DefaultQuery;
 import com.github.hjx601496320.simpledao.maker.query.Query;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class SimpleDaoTest extends JdbcTest {
 
     @Test
-    public void insert() {
-        for (int i = 0; i < 20; i++) {
+    public void insertBatch() {
+        long l = System.currentTimeMillis();
+        List list = new ArrayList();
+        for (int i = 0; i < 50000; i++) {
             User user = new User();
             user.setName(UUID.randomUUID().toString());
             user.setMark("mark");
             user.setAge(new Random().nextInt(100));
             user.setCreateDate(new Date());
-            Integer integer = simpleDao.insert(user);
-            System.out.println(integer);
+            list.add(user);
         }
+        Integer integer = simpleDao.insertBatch(User.class, list);
+        System.out.println(integer);
+        System.out.println(System.currentTimeMillis() - l);
+    }
+
+    @Test
+    public void insert() {
+        long l = System.currentTimeMillis();
+        for (int i = 0; i < 1000; i++) {
+            User user = new User();
+            user.setName(UUID.randomUUID().toString());
+            user.setMark("mark");
+            user.setAge(new Random().nextInt(100));
+            user.setCreateDate(new Date());
+            simpleDao.insert(user);
+        }
+        System.out.println(System.currentTimeMillis() - l);
     }
 
     @Test

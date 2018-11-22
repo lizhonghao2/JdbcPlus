@@ -1,78 +1,85 @@
 package com.github.hjx601496320.simpledao;
 
-
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
+import com.github.hjx601496320.simpledao.jdbc.annotation.ID;
+import com.github.hjx601496320.simpledao.jdbc.annotation.Column;
+import com.github.hjx601496320.simpledao.jdbc.annotation.Table;
 
-@Table(name = "user")
+@Table(value="user")
 public class User {
 
-    @Column(name = "user_name")
+    @Column(value="name")
     private String name;
 
-    @Id
-    @Column(name = "id")
-    private Integer id;
+    @ID
+    @Column(value="id")
+    private int id;
 
-    @Column(name = "age")
-    private Integer age;
+    @Column(value="age")
+    private int age;
 
-    @Column(name = "mark")
+    @Column(value="mark")
     private String mark;
 
-    @Column(name = "create_date")
+    @Column(value="create_date")
     private Date createDate;
 
-    public void setName(String name) {
+    @Column(value="status")
+    private int status;
+
+    public void setName(String name){
         this.name = name;
     }
 
-    public String getName() {
+    public String getName(){
         return this.name;
     }
-
-    public void setId(Integer id) {
+    public void setId(int id){
         this.id = id;
     }
 
-    public Integer getId() {
+    public int getId(){
         return this.id;
     }
-
-    public void setAge(Integer age) {
+    public void setAge(int age){
         this.age = age;
     }
 
-    public Integer getAge() {
+    public int getAge(){
         return this.age;
     }
-
-    public void setMark(String mark) {
+    public void setMark(String mark){
         this.mark = mark;
     }
 
-    public String getMark() {
+    public String getMark(){
         return this.mark;
     }
-
-    public Date getCreateDate() {
-        return createDate;
+    public void setCreateDate(Date createDate){
+        this.createDate = createDate;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public Date getCreateDate(){
+        return this.createDate;
+    }
+    public void setStatus(int status){
+        this.status = status;
+    }
+
+    public int getStatus(){
+        return this.status;
     }
 
     @Override
     public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", id=" + id +
-                ", age=" + age +
-                ", mark='" + mark + '\'' +
-                ", createDate=" + createDate +
-                '}';
+        final StringBuilder sb = new StringBuilder("[");
+        sb.append("name:").append(name).append(";    ");
+        sb.append("id:").append(id).append(";    ");
+        sb.append("age:").append(age).append(";    ");
+        sb.append("mark:").append(mark).append(";    ");
+        sb.append("createDate:").append(createDate).append(";    ");
+        sb.append("status:").append(status).append(";    ");
+        sb.append("]");
+        return sb.toString();
     }
 }
