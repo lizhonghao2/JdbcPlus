@@ -5,8 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.hjx601496320</groupId>
-    <artifactId>simpleDao</artifactId>
+    <artifactId>jdbcplus</artifactId>
     <version>1.0-RELEASE</version>
+    <name>jdbcPlus</name>
 
     <properties>
         <spring.jdbc.version>4.2.9.RELEASE</spring.jdbc.version>
