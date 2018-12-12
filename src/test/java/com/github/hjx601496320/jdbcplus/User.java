@@ -1,72 +1,78 @@
 package com.github.hjx601496320.jdbcplus;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
-import com.github.hjx601496320.jdbcplus.annotation.Id;
-import com.github.hjx601496320.jdbcplus.annotation.Column;
-import com.github.hjx601496320.jdbcplus.annotation.Table;
 
-@Table(value="user")
+
+@Table(name = "user")
 public class User {
 
-    @Column(value="name")
+    @Column(name = "name")
     private String name;
 
     @Id
-    @Column(value="id")
+    @Column(name = "id")
     private int id;
 
-    @Column(value="age")
+    @Column(name = "age")
     private int age;
 
-    @Column(value="mark")
+    @Column(name = "mark")
     private String mark;
 
-    @Column(value="create_date")
+    @Column(name = "create_date")
     private Date createDate;
 
-    @Column(value="status")
+    @Column(name = "status")
     private int status;
 
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
-    public void setId(int id){
+
+    public void setId(int id) {
         this.id = id;
     }
 
-    public int getId(){
+    public int getId() {
         return this.id;
     }
-    public void setAge(int age){
+
+    public void setAge(int age) {
         this.age = age;
     }
 
-    public int getAge(){
+    public int getAge() {
         return this.age;
     }
-    public void setMark(String mark){
+
+    public void setMark(String mark) {
         this.mark = mark;
     }
 
-    public String getMark(){
+    public String getMark() {
         return this.mark;
     }
-    public void setCreateDate(Date createDate){
+
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
-    public Date getCreateDate(){
+    public Date getCreateDate() {
         return this.createDate;
     }
-    public void setStatus(int status){
+
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public int getStatus(){
+    public int getStatus() {
         return this.status;
     }
 

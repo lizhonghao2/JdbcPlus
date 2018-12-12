@@ -9,33 +9,33 @@
 继承自 JdbcTemplate, 不需要额外配置
 
 import java.util.Date;
-import com.github.hjx601496320.jdbcplus.annotation.Id;
-import com.github.hjx601496320.jdbcplus.annotation.Column;
-import com.github.hjx601496320.jdbcplus.annotation.Table;
+import javax.persistence.Id;
+import javax.persistence.Column;
+import javax.persistence.Table;
 
 // 表示一张表 value为数据库表名
-@Table(value="user")
+@Table(name="user")
 public class User {
 
-    @Column(value="name")
+    @Column(name="name")
     private String name;
 
     // 表示一个id（一个class限制一个id）
     @Id 
     // 表示一个字段 value为数据库字段名
-    @Column(value="id") 
+    @Column(name="id") 
     private int id;
 
-    @Column(value="age")
+    @Column(name="age")
     private int age;
 
-    @Column(value="mark")
+    @Column(name="mark")
     private String mark;
 
-    @Column(value="create_date")
+    @Column(name="create_date")
     private Date createDate;
 
-    @Column(value="status")
+    @Column(name="status")
     private int status;
     ...
     get...

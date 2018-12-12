@@ -1,13 +1,16 @@
 package com.github.hjx601496320.jdbcplus.util;
 
-import com.github.hjx601496320.jdbcplus.annotation.Column;
-import com.github.hjx601496320.jdbcplus.annotation.Id;
-import com.github.hjx601496320.jdbcplus.annotation.Table;
 import org.springframework.util.Assert;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 实体类的工具类
@@ -57,7 +60,7 @@ public class EntityUtils {
     public static String idFieldName(Class<?> clz) {
         Assert.isTrue(isTable(clz), IS_NOT_TABLE);
         Field idField = idField(clz);
-        //entity中不存在@ID注解时，忽略。
+        //entity中不存在@Id注解时，忽略。
         if (idField == null) {
             return null;
         }
@@ -180,35 +183,25 @@ public class EntityUtils {
 
     /**
      * 找到clz上Table注解中的值
-     * JPA支持
      *
      * @param clz
      * @return
      */
     public static String tableName(Class<?> clz) {
         Assert.isTrue(isTable(clz), IS_NOT_TABLE);
-        Table annotation = getAnnotation(clz, Table.class);
-        if (annotation == null) {
-            return getAnnotation(clz, javax.persistence.Table.class).name();
-        }
-        return annotation.value();
+        return getAnnotation(clz, Table.class).name();
     }
 
 
     /**
      * 获取列的名称
-     * JPA支持
      *
      * @param field
      * @return
      */
     static String columnName(Field field) {
         Assert.isTrue(isColumn(field), IS_NOT_COLUMN);
-        Column annotation = getAnnotation(field, Column.class);
-        if (annotation == null) {
-            return getAnnotation(field, javax.persistence.Column.class).name();
-        }
-        return annotation.value();
+        return getAnnotation(field, Column.class).name();
     }
 
     /**
@@ -219,8 +212,6 @@ public class EntityUtils {
      */
     static boolean isTable(Class aClass) {
         if (hasAnnotation(aClass, Table.class)) {
-            return true;
-        } else if (hasAnnotation(aClass, javax.persistence.Table.class)) {
             return true;
         }
         return false;
@@ -235,8 +226,6 @@ public class EntityUtils {
     static boolean isColumn(Field field) {
         if (hasAnnotation(field, Column.class)) {
             return true;
-        } else if (hasAnnotation(field, javax.persistence.Column.class)) {
-            return true;
         }
         return false;
     }
@@ -250,8 +239,6 @@ public class EntityUtils {
      */
     static boolean isId(Field field) {
         if (hasAnnotation(field, Id.class)) {
-            return true;
-        } else if (hasAnnotation(field, javax.persistence.Id.class)) {
             return true;
         }
         return false;
