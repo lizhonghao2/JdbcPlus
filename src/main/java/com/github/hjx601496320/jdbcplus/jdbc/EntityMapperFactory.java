@@ -4,7 +4,10 @@ import com.github.hjx601496320.jdbcplus.util.EntityUtils;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * mapper 的 工厂类
@@ -26,35 +29,31 @@ public class EntityMapperFactory {
      */
     public static EntityTableRowMapper getMapper(Class clz) {
         Assert.notNull(clz);
-        EntityTableRowMapper<?> entityTableRowMapper = null;
-        if (!entityTableRowMapperMap.containsKey(clz)) {
-            synchronized (EntityMapperFactory.class) {
-                if (entityTableRowMapperMap.containsKey(clz)) {
-                    return entityTableRowMapperMap.get(clz);
-                }
-                entityTableRowMapper = new EntityTableRowMapper();
-                entityTableRowMapper.setTableClass(clz);
-                entityTableRowMapper.setTableName(EntityUtils.tableName(clz));
-                entityTableRowMapper.setIdName(EntityUtils.idColumnName(clz));
-                Map<String, Field> columnFieldMap = EntityUtils.columnFieldMap(clz);
-                entityTableRowMapper.setColumnFieldMapper(columnFieldMap);
-
-                Map<String, String> fieldNameColumnMapper = new HashMap<>(columnFieldMap.size());
-                Set<String> columnNames = new HashSet<>(columnFieldMap.size());
-                Set<String> fieldNames = new HashSet<>();
-                for (Map.Entry<String, Field> entry : columnFieldMap.entrySet()) {
-                    String columnName = entry.getKey();
-                    Field field = entry.getValue();
-                    String fieldName = field.getName();
-                    fieldNameColumnMapper.put(fieldName, columnName);
-                    fieldNames.add(fieldName);
-                    columnNames.add(columnName);
-                }
-                entityTableRowMapper.setColumnNames(columnNames);
-                entityTableRowMapper.setFieldNameColumnMapper(fieldNameColumnMapper);
-                entityTableRowMapper.setFieldNames(fieldNames);
-                entityTableRowMapperMap.put(clz, entityTableRowMapper);
+        EntityTableRowMapper<?> mapper = null;
+        //即使出现了并发的问题，无非就是多创建几次对象，不会出现数据错乱。
+        if (entityTableRowMapperMap.get(clz) == null) {
+            mapper = new EntityTableRowMapper();
+            Map<String, Field> columnFieldMap = EntityUtils.columnFieldMap(clz);
+            int size = columnFieldMap.size();
+            Map<String, String> fieldNameColumnMapper = new HashMap<>(size);
+            Set<String> columnNames = new HashSet<>(size);
+            Set<String> fieldNames = new HashSet<>(size);
+            mapper.setTableClass(clz);
+            mapper.setTableName(EntityUtils.tableName(clz));
+            mapper.setIdName(EntityUtils.idColumnName(clz));
+            mapper.setColumnFieldMapper(columnFieldMap);
+            for (Map.Entry<String, Field> entry : columnFieldMap.entrySet()) {
+                String columnName = entry.getKey();
+                Field field = entry.getValue();
+                String fieldName = field.getName();
+                fieldNameColumnMapper.put(fieldName, columnName);
+                fieldNames.add(fieldName);
+                columnNames.add(columnName);
             }
+            mapper.setColumnNames(columnNames);
+            mapper.setFieldNameColumnMapper(fieldNameColumnMapper);
+            mapper.setFieldNames(fieldNames);
+            entityTableRowMapperMap.put(clz, mapper);
         }
         return entityTableRowMapperMap.get(clz);
     }

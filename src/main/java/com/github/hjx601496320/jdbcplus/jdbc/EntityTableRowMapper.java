@@ -45,11 +45,15 @@ public class EntityTableRowMapper<T> implements RowMapper<T> {
 
     /**
      * 属性名称和数据库字段名的映射
+     * K: 属性名
+     * V：表字段名称
      */
     private Map<String, String> fieldNameColumnMapper = null;
 
     /**
      * 数据库字段名和class属性的映射
+     * K：表字段名称
+     * V：class属性
      */
     private Map<String, Field> columnFieldMapper = null;
 
