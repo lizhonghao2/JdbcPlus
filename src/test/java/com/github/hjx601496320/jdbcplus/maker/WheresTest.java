@@ -1,10 +1,44 @@
 package com.github.hjx601496320.jdbcplus.maker;
 
+import com.github.hjx601496320.jdbcplus.util.StringUtils;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class WheresTest {
+
+    @Test
+    public void name() {
+        List<Where> wheres = Arrays.asList(
+                Wheres.equal("name", "李叔叔"),
+                Wheres.notEqual("status", 1),
+                Wheres.in("age", new Integer[]{1, 2, 3, 4, 5}),
+                Wheres.greater("age", 20, true)
+        );
+        List<Object> sqlValue = new ArrayList<>();
+        StringBuilder sql = new StringBuilder();
+        if (wheres.size() != 0) {
+            sql.append("WHERE ");
+            for (int i = 0; i < wheres.size(); i++) {
+                Where where = wheres.get(i);
+                if (i != 0) {
+                    sql.append(where.getConnect());
+                }
+                String column = where.getColumn();
+                String whereSql = where.getSql();
+                sql.append(whereSql.replace(Where.PLACEHOLDER, column));
+                //因为有些条件中的参数可能是有多个
+                List<Object> values = where.getValues();
+                for (int j = 0; j < values.size(); j++) {
+                    sqlValue.add(values.get(j));
+                }
+            }
+        }
+        System.out.println(sql.toString());
+        System.out.println(sqlValue.toString());
+    }
 
     @Test
     public void equal() {

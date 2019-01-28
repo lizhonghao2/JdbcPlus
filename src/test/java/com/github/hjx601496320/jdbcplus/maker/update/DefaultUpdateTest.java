@@ -2,7 +2,7 @@ package com.github.hjx601496320.jdbcplus.maker.update;
 
 import com.github.hjx601496320.jdbcplus.maker.Wheres;
 import org.junit.Test;
-import com.github.hjx601496320.jdbcplus.User;
+import com.github.hjx601496320.jdbcplus.entity.User;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -19,7 +19,9 @@ public class DefaultUpdateTest {
         DefaultUpdate defaultUpdate = new DefaultUpdate();
         defaultUpdate.target(User.class);
         defaultUpdate.set(user, true);
-
+        defaultUpdate.where(
+                Wheres.equal("id", 12)
+        );
         System.out.println(defaultUpdate.makeSql());
         System.out.println(Arrays.toString(defaultUpdate.makeSqlValue().toArray()));
     }

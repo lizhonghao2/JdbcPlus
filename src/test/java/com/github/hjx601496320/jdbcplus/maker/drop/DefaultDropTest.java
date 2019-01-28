@@ -1,7 +1,7 @@
 package com.github.hjx601496320.jdbcplus.maker.drop;
 
 import org.junit.Test;
-import com.github.hjx601496320.jdbcplus.User;
+import com.github.hjx601496320.jdbcplus.entity.User;
 
 import java.util.Arrays;
 import java.util.Date;

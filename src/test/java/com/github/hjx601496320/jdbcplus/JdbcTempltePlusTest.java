@@ -1,12 +1,13 @@
 package com.github.hjx601496320.jdbcplus;
 
-import org.junit.Test;
+import com.github.hjx601496320.jdbcplus.entity.User;
 import com.github.hjx601496320.jdbcplus.jdbc.JdbcTest;
 import com.github.hjx601496320.jdbcplus.maker.Wheres;
 import com.github.hjx601496320.jdbcplus.maker.delete.DefaultDelete;
 import com.github.hjx601496320.jdbcplus.maker.delete.Delete;
 import com.github.hjx601496320.jdbcplus.maker.query.DefaultQuery;
 import com.github.hjx601496320.jdbcplus.maker.query.Query;
+import org.junit.Test;
 
 import java.util.*;
 
@@ -51,13 +52,14 @@ public class JdbcTempltePlusTest extends JdbcTest {
 
     @Test
     public void selectById() {
-        User user = jdbcTempltePlus.selectById(User.class, "12");
+        User user = jdbcTempltePlus.selectById(User.class, "4028b88159153cce0159165c345a002f");
         System.out.println(user);
     }
 
+
     @Test
-    public void selectBy() {
-        List<User> users = jdbcTempltePlus.selectBy(User.class, "user_name", "123");
+    public void selectUserBy() {
+        List<User> users = jdbcTempltePlus.select(User.class);
         System.out.println(users);
     }
 
@@ -70,6 +72,7 @@ public class JdbcTempltePlusTest extends JdbcTest {
         );
         System.out.println(users);
     }
+
 
     @Test
     public void selectOneBy() {

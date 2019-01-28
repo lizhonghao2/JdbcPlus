@@ -29,9 +29,11 @@ import java.util.List;
  *
  * @author hjx
  */
-public class JdbcTempltePlus extends JdbcTemplate {
+public class JdbcTempltePlus {
 
     private Log logger = LogFactory.getLog(JdbcTempltePlus.class);
+
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * 查询所有
@@ -288,7 +290,7 @@ public class JdbcTempltePlus extends JdbcTemplate {
             logger.debug(sql);
             logger.debug(Arrays.toString(sqlValues));
         }
-        return update(sql, sqlValues);
+        return jdbcTemplate.update(sql, sqlValues);
     }
 
     /**
@@ -304,7 +306,7 @@ public class JdbcTempltePlus extends JdbcTemplate {
             logger.debug(sql);
             logger.debug(Arrays.toString(sqlValues));
         }
-        return update(sql, sqlValues);
+        return jdbcTemplate.update(sql, sqlValues);
     }
 
     /**
@@ -320,7 +322,7 @@ public class JdbcTempltePlus extends JdbcTemplate {
             logger.debug(sql);
             logger.debug(Arrays.toString(sqlValues));
         }
-        return update(sql, sqlValues);
+        return jdbcTemplate.update(sql, sqlValues);
     }
 
     /**
@@ -337,7 +339,7 @@ public class JdbcTempltePlus extends JdbcTemplate {
             logger.debug(sql);
             logger.debug(Arrays.toString(sqlValues));
         }
-        return query(sql, sqlValues, mapper);
+        return jdbcTemplate.query(sql, sqlValues, mapper);
 
     }
 
@@ -363,11 +365,18 @@ public class JdbcTempltePlus extends JdbcTemplate {
             logger.debug(sql);
             logger.debug(Arrays.toString(sqlValues));
         }
-        return query(sql, new FunctionRowMapper(function), sqlValues);
+        return jdbcTemplate.query(sql, new FunctionRowMapper(function), sqlValues);
     }
 
     public JdbcTempltePlus() {
         super();
     }
 
+    public JdbcTemplate getJdbcTemplate() {
+        return jdbcTemplate;
+    }
+
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 }

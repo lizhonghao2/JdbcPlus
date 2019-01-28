@@ -116,9 +116,9 @@ public class EntityUtils {
     /**
      * 设置值
      *
-     * @param target
-     * @param field
-     * @param value
+     * @param target 要从哪一个对象中取值
+     * @param field  要取这个对象的那个属性的值
+     * @param value  要设置的值
      * @return
      */
     public static boolean setValue(Object target, Field field, Object value) {
@@ -137,8 +137,8 @@ public class EntityUtils {
     /**
      * 取值
      *
-     * @param target
-     * @param field
+     * @param target 要从哪一个对象中取值
+     * @param field  要取这个对象的那个属性的值
      * @return
      */
     public static Object getValue(Object target, Field field) {

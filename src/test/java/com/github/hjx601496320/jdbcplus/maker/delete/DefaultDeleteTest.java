@@ -2,7 +2,7 @@ package com.github.hjx601496320.jdbcplus.maker.delete;
 
 import com.github.hjx601496320.jdbcplus.maker.Wheres;
 import org.junit.Test;
-import com.github.hjx601496320.jdbcplus.User;
+import com.github.hjx601496320.jdbcplus.entity.User;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -18,7 +18,9 @@ public class DefaultDeleteTest {
         user.setName("heiheihei3");
         DefaultDelete delete = new DefaultDelete();
         delete.target(User.class);
-
+        delete.where(
+                Wheres.equal("id", 12)
+        );
         System.out.println(delete.makeSql());
         System.out.println(Arrays.toString(delete.makeSqlValue().toArray()));
 

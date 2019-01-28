@@ -1,7 +1,7 @@
 package com.github.hjx601496320.jdbcplus.maker.insert;
 
 import org.junit.Test;
-import com.github.hjx601496320.jdbcplus.User;
+import com.github.hjx601496320.jdbcplus.entity.User;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -18,7 +18,6 @@ public class DefaultInsertTest {
         user.setName("heiheihei");
         DefaultInsert insert = new DefaultInsert();
         insert.target(User.class);
-        insert.insert(user);
         insert.insert(user);
         System.out.println(insert.makeSql());
         System.out.println(Arrays.toString(insert.makeSqlValue().toArray()));

@@ -1,7 +1,7 @@
 package com.github.hjx601496320.jdbcplus.maker.query;
 
 import org.junit.Test;
-import com.github.hjx601496320.jdbcplus.User;
+import com.github.hjx601496320.jdbcplus.entity.User;
 import com.github.hjx601496320.jdbcplus.maker.Wheres;
 
 import java.util.Arrays;
@@ -12,7 +12,11 @@ public class DefaultQueryTest {
     public void addSelection() {
         DefaultQuery query = new DefaultQuery();
         query.target(User.class);
-        query.addSelection("user_name", "age", "mark");
+        query.where(
+                Wheres.equal("id", 12),
+                Wheres.notEqual("name", 12),
+                Wheres.greater("age", 12, true)
+        );
         System.out.println(query.makeSql());
         System.out.println(Arrays.toString(query.makeSqlValue().toArray()));
     }

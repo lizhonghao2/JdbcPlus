@@ -1,6 +1,6 @@
 package com.github.hjx601496320.jdbcplus.util;
 
-import com.github.hjx601496320.jdbcplus.User;
+import com.github.hjx601496320.jdbcplus.entity.User;
 import org.junit.Test;
 
 import javax.persistence.Column;

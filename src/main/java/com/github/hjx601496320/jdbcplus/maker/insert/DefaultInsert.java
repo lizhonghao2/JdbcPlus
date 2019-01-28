@@ -65,11 +65,12 @@ public class DefaultInsert extends AbstractSqlMaker implements Insert {
             builder.append("( ");
             String[] repeat = StringUtils.repeat("?", size);
             builder.append(StringUtils.join(Arrays.asList(repeat), ", "));
-            builder.append(" ) ");
+            builder.append(" )");
             if (i != insertCount - 1) {
                 builder.append(StringUtils.COMMA);
             }
         }
+        builder.append(";");
         return builder.toString();
     }
 

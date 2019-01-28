@@ -46,6 +46,7 @@ public class DefaultUpdate extends AbstractSqlMaker implements Update {
             }
             Field field = columnFieldMapper.get(columnName);
             Object value = EntityUtils.getValue(entity, field);
+            //如果class中的值是null，并且设置忽略null，跳过
             if (ignoreNull && value == null) {
                 continue;
             }

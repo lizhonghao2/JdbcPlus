@@ -1,32 +1,54 @@
-package com.github.hjx601496320.jdbcplus;
+package com.github.hjx601496320.jdbcplus.entity;
 
+import java.util.Date;
+import java.math.BigDecimal;
+import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.Id;
-import javax.persistence.Table;
-import java.util.Date;
 
-
+/**
+ * 用户表
+ * @author hejiaxuan
+ */
 @Table(name = "user")
 public class User {
 
+    /**big*/
+    @Column(name = "big")
+    private BigDecimal big;
+
+    /**用户名*/
     @Column(name = "name")
     private String name;
 
+    /**用户id*/
     @Id
     @Column(name = "id")
     private int id;
 
+    /**年龄*/
     @Column(name = "age")
     private int age;
 
+    /**mark*/
     @Column(name = "mark")
     private String mark;
 
+    /**create_date*/
     @Column(name = "create_date")
     private Date createDate;
 
+    /**status*/
     @Column(name = "status")
     private int status;
+
+    public void setBig(BigDecimal big) {
+        this.big = big;
+    }
+
+    public BigDecimal getBig() {
+        return this.big;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -76,9 +98,11 @@ public class User {
         return this.status;
     }
 
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("[");
+        sb.append("big:").append(big).append(";    ");
         sb.append("name:").append(name).append(";    ");
         sb.append("id:").append(id).append(";    ");
         sb.append("age:").append(age).append(";    ");
