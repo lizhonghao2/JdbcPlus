@@ -1,13 +1,21 @@
-### jdbcPlus
+### JdbcPlus
 ```$xslt
 简单的数据库操作.
 支持mysql.
 依赖spring-jdbc.
 ```
 ### 配置:
-```$xslt
-继承自 JdbcTemplate, 不需要额外配置
 
+配置JdbcTempltePlus
+
+```java
+ JdbcTempltePlus jdbcTempltePlus = new JdbcTempltePlus();
+ jdbcTempltePlus.setJdbcTemplate(jdbcTemplate);
+```
+
+在class上添加注解
+
+```$xslt
 import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Column;

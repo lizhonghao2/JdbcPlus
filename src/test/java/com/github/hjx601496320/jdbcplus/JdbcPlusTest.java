@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import java.util.*;
 
-public class JdbcTempltePlusTest extends JdbcTest {
+public class JdbcPlusTest extends JdbcTest {
 
     @Test
     public void insertBatch() {
@@ -25,7 +25,7 @@ public class JdbcTempltePlusTest extends JdbcTest {
             user.setCreateDate(new Date());
             list.add(user);
         }
-        Integer integer = jdbcTempltePlus.insertBatch(User.class, list);
+        Integer integer = jdbcPlus.insertBatch(User.class, list);
         System.out.println(integer);
         System.out.println(System.currentTimeMillis() - l);
     }
@@ -39,33 +39,33 @@ public class JdbcTempltePlusTest extends JdbcTest {
             user.setMark("mark");
             user.setAge(new Random().nextInt(100));
             user.setCreateDate(new Date());
-            jdbcTempltePlus.insert(user);
+            jdbcPlus.insert(user);
         }
         System.out.println(System.currentTimeMillis() - l);
     }
 
     @Test
     public void select() {
-        List<User> users = jdbcTempltePlus.select(User.class);
+        List<User> users = jdbcPlus.select(User.class);
         System.out.println(users);
     }
 
     @Test
     public void selectById() {
-        User user = jdbcTempltePlus.selectById(User.class, "4028b88159153cce0159165c345a002f");
+        User user = jdbcPlus.selectById(User.class, "4028b88159153cce0159165c345a002f");
         System.out.println(user);
     }
 
 
     @Test
     public void selectUserBy() {
-        List<User> users = jdbcTempltePlus.select(User.class);
+        List<User> users = jdbcPlus.select(User.class);
         System.out.println(users);
     }
 
     @Test
     public void selectBy1() {
-        List<User> users = jdbcTempltePlus.selectBy(
+        List<User> users = jdbcPlus.selectBy(
                 User.class,
                 "name", "123",
                 "age", "18"
@@ -76,13 +76,13 @@ public class JdbcTempltePlusTest extends JdbcTest {
 
     @Test
     public void selectOneBy() {
-        User user = jdbcTempltePlus.selectOneBy(User.class, "age", "18");
+        User user = jdbcPlus.selectOneBy(User.class, "age", "18");
         System.out.println(user);
     }
 
     @Test
     public void selectOneBy1() {
-        User user = jdbcTempltePlus.selectOneBy(
+        User user = jdbcPlus.selectOneBy(
                 User.class,
                 "user_name", "123",
                 "age", "18"
@@ -97,7 +97,7 @@ public class JdbcTempltePlusTest extends JdbcTest {
         query.where(
                 Wheres.equal("age", "18")
         );
-        User user = jdbcTempltePlus.selectOneBy(query);
+        User user = jdbcPlus.selectOneBy(query);
         System.out.println(user);
     }
 
@@ -107,7 +107,7 @@ public class JdbcTempltePlusTest extends JdbcTest {
             User user = new User();
             user.setMark("markUpdate");
             user.setId(new Random().nextInt(100));
-            Integer integer = jdbcTempltePlus.updateById(user);
+            Integer integer = jdbcPlus.updateById(user);
             System.out.println(integer);
         }
     }
@@ -119,14 +119,14 @@ public class JdbcTempltePlusTest extends JdbcTest {
             User user = new User();
             user.setMark("markUpdate");
             user.setId(new Random().nextInt(100));
-            Integer integer = jdbcTempltePlus.updateById(user, true);
+            Integer integer = jdbcPlus.updateById(user, true);
             System.out.println(integer);
         }
     }
 
     @Test
     public void deleteById() {
-        Integer deleteById = jdbcTempltePlus.deleteById(User.class, "123");
+        Integer deleteById = jdbcPlus.deleteById(User.class, "123");
         System.out.println(deleteById);
     }
 
@@ -134,13 +134,13 @@ public class JdbcTempltePlusTest extends JdbcTest {
     public void deleteBy() {
         Delete delete = new DefaultDelete();
         delete.target(User.class);
-        Integer deleteBy = jdbcTempltePlus.deleteBy(delete);
+        Integer deleteBy = jdbcPlus.deleteBy(delete);
         System.out.println(deleteBy);
     }
 
     @Test
     public void deleteBy1() {
-        Integer deleteBy = jdbcTempltePlus.deleteBy(
+        Integer deleteBy = jdbcPlus.deleteBy(
                 User.class,
                 "age", "19",
                 "user_name", "hebaibai"

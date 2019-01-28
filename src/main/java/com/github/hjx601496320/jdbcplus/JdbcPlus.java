@@ -29,9 +29,9 @@ import java.util.List;
  *
  * @author hjx
  */
-public class JdbcTempltePlus {
+public class JdbcPlus {
 
-    private Log logger = LogFactory.getLog(JdbcTempltePlus.class);
+    private Log logger = LogFactory.getLog(JdbcPlus.class);
 
     private JdbcTemplate jdbcTemplate;
 
@@ -368,7 +368,7 @@ public class JdbcTempltePlus {
         return jdbcTemplate.query(sql, new FunctionRowMapper(function), sqlValues);
     }
 
-    public JdbcTempltePlus() {
+    public JdbcPlus() {
         super();
     }
 

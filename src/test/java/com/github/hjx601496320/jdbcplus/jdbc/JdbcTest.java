@@ -1,19 +1,15 @@
 package com.github.hjx601496320.jdbcplus.jdbc;
 
-import com.github.hjx601496320.jdbcplus.JdbcTempltePlus;
+import com.github.hjx601496320.jdbcplus.JdbcPlus;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class JdbcTest {
 
-    public JdbcTempltePlus jdbcTempltePlus = null;
+    public JdbcPlus jdbcPlus = null;
 
     {
         ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
@@ -31,8 +27,8 @@ public class JdbcTest {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.setDataSource(dataSource);
 
-        jdbcTempltePlus = new JdbcTempltePlus();
-        jdbcTempltePlus.setJdbcTemplate(jdbcTemplate);
+        jdbcPlus = new JdbcPlus();
+        jdbcPlus.setJdbcTemplate(jdbcTemplate);
     }
 
 }
