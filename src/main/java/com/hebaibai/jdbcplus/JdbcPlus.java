@@ -1,15 +1,8 @@
 package com.hebaibai.jdbcplus;
 
-import com.hebaibai.jdbcplus.jdbc.FunctionRowMapper;
-import com.hebaibai.jdbcplus.maker.Function;
-import com.hebaibai.jdbcplus.maker.Where;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.util.Assert;
 import com.hebaibai.jdbcplus.jdbc.EntityMapperFactory;
 import com.hebaibai.jdbcplus.jdbc.EntityTableRowMapper;
-import com.hebaibai.jdbcplus.util.EntityUtils;
+import com.hebaibai.jdbcplus.jdbc.FieldColumnRowMapper;
 import com.hebaibai.jdbcplus.maker.Wheres;
 import com.hebaibai.jdbcplus.maker.delete.DefaultDelete;
 import com.hebaibai.jdbcplus.maker.delete.Delete;
@@ -19,6 +12,12 @@ import com.hebaibai.jdbcplus.maker.query.DefaultQuery;
 import com.hebaibai.jdbcplus.maker.query.Query;
 import com.hebaibai.jdbcplus.maker.update.DefaultUpdate;
 import com.hebaibai.jdbcplus.maker.update.Update;
+import com.hebaibai.jdbcplus.util.ClassUtils;
+import com.hebaibai.jdbcplus.util.EntityUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.util.Assert;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -166,6 +165,31 @@ public class JdbcPlus {
     }
 
     /**
+     * 执行一条sql
+     *
+     * @param sql
+     * @param sqlValues
+     * @param objClass
+     * @param <T>
+     * @return
+     */
+    final public <T> List<T> selectBySql(final String sql, final Object[] sqlValues, final Class<T> objClass) {
+        return jdbcTemplate.query(sql, sqlValues, new FieldColumnRowMapper(objClass));
+    }
+
+    /**
+     * 执行一条sql
+     *
+     * @param sql
+     * @param objClass
+     * @param <T>
+     * @return
+     */
+    final public <T> List<T> selectBySql(final String sql, final Class<T> objClass) {
+        return jdbcTemplate.query(sql, new FieldColumnRowMapper(objClass));
+    }
+
+    /**
      * 根据id删除数据
      *
      * @param clz
@@ -268,7 +292,7 @@ public class JdbcPlus {
         Class clz = entity.getClass();
         EntityTableRowMapper mapper = EntityMapperFactory.getMapper(clz);
         Field field = EntityUtils.idField(clz);
-        Object id = EntityUtils.getValue(entity, field);
+        Object id = ClassUtils.getValue(entity, field);
         Update update = new DefaultUpdate();
         update.target(clz);
         update.set(entity, ignoreNull);
@@ -343,30 +367,6 @@ public class JdbcPlus {
 
     }
 
-    /**
-     * 执行一条函数
-     *
-     * @param clz
-     * @param function
-     * @param wheres
-     * @param <T>
-     * @return
-     */
-    final public <T> List<T> function(final Class clz, final Function<T> function, final List<Where> wheres) {
-        Query query = new DefaultQuery();
-        query.target(clz);
-        query.addSelection(false, function.getSql());
-        for (Where where : wheres) {
-            query.where(where);
-        }
-        String sql = query.toSql();
-        Object[] sqlValues = query.getSqlValues();
-        if (logger.isDebugEnabled()) {
-            logger.debug(sql);
-            logger.debug(Arrays.toString(sqlValues));
-        }
-        return jdbcTemplate.query(sql, new FunctionRowMapper(function), sqlValues);
-    }
 
     public JdbcPlus() {
         super();
